@@ -325,21 +325,6 @@ Full-Width Styles
   background: url('../images/icon_download.png') no-repeat 0% 90%;
 }
 
-.zip_download_link {
-  display: block;
-  float: left;
-  width: 90px;
-  height:70px;
-  text-indent: -5000px;
-  overflow: hidden;
-  background: url(https://cloud.githubusercontent.com/assets/13187260/8513670/8510af6e-2329-11e5-9c12-0c068f5ef217.png) no-repeat bottom left;
-  margin-left: 30px;
-}
-
-.zip_download_link:hover {
-  background: url(https://cloud.githubusercontent.com/assets/13187260/8513670/8510af6e-2329-11e5-9c12-0c068f5ef217.png) no-repeat top left;
-}
-
 #main_content_wrap {
   background: #f2f2f2;
   border-top: 1px solid #111;
