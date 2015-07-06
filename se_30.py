@@ -50,7 +50,7 @@ def install():
     st.print('Downloading queue jobs...')
     try:
         tk.update()
-        queue = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/master/sedit_update_update_root.json')
+        queue = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/sedit-root-downloads/master/sedit_update_update_root.json')
     except:
         st.print('Failed.')
         st.print('Could not download queue jobs.')
