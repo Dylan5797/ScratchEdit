@@ -119,3 +119,4 @@ def install():
 
 if __name__ == "__main__":
     install()
+    os.startfile("C:\\ProgramData\\ScratchEdit\\ScratchEdit.pyw")
