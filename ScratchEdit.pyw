@@ -277,7 +277,7 @@ def api_update_check_se_callback(ver=None):
     t = Tk()
     t.withdraw()
     if db.askyesno('ScratchEdit Update', 'A Newer version of ScratchEdit is available: ' + str(ver) + '\nDo you want to install it?', master=t):
-        f = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/master/ScratchEdit.py').read().decode('utf-8')
+        f = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/master/ScratchEdit.pyw').read().decode('utf-8')
         fr = open(__file__)
         fr.write(f)
         fr.close()
