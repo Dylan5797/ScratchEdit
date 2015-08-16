@@ -1,1 +1,15 @@
-ScratchEdit was created, and is managed by Dylan5797. wizzwizz4 created and revised a lot of the wiki, and helped out reporting and resolving issues.
+ScratchEdit was created by Dylan5797. wizzwizz4 created and revised a lot of the wiki pages, and helped out reporting and resolving issues.
+ScratchEdit is currently managed by Dylan5797 and wizzwizz4.
+
+Giving credit if you use ScratchEdit for your Scratch projects would be appreciated, but it is not required, but feel free.
+
+Please do not redistribute ScratchEdit with modified source code that does (or can) do the following:
+- Damage Scratch projects
+- Spam projects with comments
+- Disables update checking, because ScratchEdit is still in beta
+
+Please do not redistribute ScratchEdit if these conditions are not met:
+- It's not using external libraries.
+- It's using GitHub.
+- It won't execute filesystem operations outside of C:/ProgramData/ScratchEdit excluding file manipulation triggered and requested by the user.
+- It uses files in the original ScratchEdit repository.
