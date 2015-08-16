@@ -3,6 +3,9 @@ ScratchEdit is currently managed by Dylan5797 and wizzwizz4.
 
 Giving credit if you use ScratchEdit for your Scratch projects would be appreciated, but it is not required, but feel free.
 
+ScratchEdit is under the Creative Commons BY-NC [https://creativecommons.org/licenses/by-nc/4.0/]
+
+REDISTRIBUTE refers to distributing ScratchEdit in any form.
 Please do not redistribute ScratchEdit with modified source code that does (or can) do the following:
 - Damage Scratch projects
 - Spam projects with comments
@@ -12,4 +15,5 @@ Please do not redistribute ScratchEdit if these conditions are not met:
 - It's not using external libraries.
 - It's using GitHub.
 - It won't execute filesystem operations outside of C:/ProgramData/ScratchEdit excluding file manipulation triggered and requested by the user.
-- It uses files in the original ScratchEdit repository.
+- It doesn't use files from the original ScratchEdit repository.
+- It gives credit to the original creators and developers.
