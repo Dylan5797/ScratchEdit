@@ -40,7 +40,7 @@ try:
     if args[1] == 'error':
         print(args[2])
         sys.stdin.readline(0)
-        sys.exit()
+        os._exit(1)
 except:
     pass
     	
