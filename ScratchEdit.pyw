@@ -62,7 +62,7 @@ if not platform.uname().system == 'Windows':
     fatalErr = True
 if fatalErr == True:
     errText = errText + ('Press return to close')
-    subprocess.call([sys.executable.replace('pythonw','python'), __file__, 'error', fatalErr])
+    subprocess.call([sys.executable.replace('pythonw','python'), __file__, 'error', errText])
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
