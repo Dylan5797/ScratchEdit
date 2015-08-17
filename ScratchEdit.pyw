@@ -35,6 +35,11 @@ import traceback
 import json
 import webbrowser
 # Done imports
+if args[1] == 'error':
+    print(args[2])
+    sys.stdin.readline(0)
+    sys.exit()
+
 fatalErr = False
 errText = ''
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
@@ -52,8 +57,7 @@ if not platform.uname().system == 'Windows':
     fatalErr = True
 if fatalErr == True:
     errText = errText + ('Press return to close')
-    subprocess.call([sys.executable.replace('pythonw','python'), 'import sys; print("' + errText + '"); sys.stdin.readline(0); sys.exit()'])
-    sys.stdin.readline(0)
+    subprocess.call([sys.executable.replace('pythonw','python'), __file__, 'error', fatalErr])
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
