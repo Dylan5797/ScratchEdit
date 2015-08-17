@@ -35,23 +35,30 @@ import traceback
 import json
 import webbrowser
 # Done imports
+args = sys.argv
+if args[1] == 'error':
+    print(args[2])
+    sys.stdin.readline(0)
+    sys.exit()
+
 fatalErr = False
+errText = ''
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
-    print('ScratchEdit is made for Python "v3.4.0" but your Python version is "' + platform.python_branch() + '"')
+    errText = errText + ('ScratchEdit is made for Python "v3.4.0" but your Python version is "' + platform.python_branch() + '"\n')
     fatalErr = True
 try:
     import tkinter
 except:
-    print('tkinter wasn\'t installed during Python installation!! ScratchEdit cannot be used if Python has not been installed with the official installer OR you have unchecked "Tcl/IDLE" in the installer. Please reinstall Python and do it right')
+    errText = errText + ('tkinter wasn\'t installed during Python installation!! ScratchEdit cannot be used if Python has not been installed with the official installer OR you have unchecked "Tcl/IDLE" in the installer. Please reinstall Python and do it right\n')
     fatalErr = True
 else:
     del tkinter
 if not platform.uname().system == 'Windows':
-    print('You have to be using Windows to run ScratchEdit!')
+    errText = errText + ('You have to be using Windows to run ScratchEdit!\n')
     fatalErr = True
 if fatalErr == True:
-    print('Press return to close')
-    sys.stdin.readline(0)
+    errText = errText + ('Press return to close')
+    subprocess.call([sys.executable.replace('pythonw','python'), __file__, 'error', fatalErr])
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
