@@ -35,26 +35,25 @@ import traceback
 import json
 import webbrowser
 # Done imports
+fatalErr = False
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
     print('ScratchEdit is made for Python "v3.4.0" but your Python version is "' + platform.python_branch() + '"')
-    print('Press return to close')
-    sys.stdin.readline(0)
-    sys.exit()
+    fatalErr = True
 try:
     import tkinter
 except:
     print('tkinter wasn\'t installed during Python installation!! ScratchEdit cannot be used if Python has not been installed with the official installer OR you have unchecked "Tcl/IDLE" in the installer. Please reinstall Python and do it right')
-    print('Press return to close')
-    sys.stdin.readline(0)
-    sys.exit()
+    fatalErr = True
 else:
     del tkinter
-
 if not platform.uname().system == 'Windows':
     print('You have to be using Windows to run ScratchEdit!')
+    fatalErr = True
+if fatalErr == True:
     print('Press return to close')
     sys.stdin.readline(0)
     sys.exit()
+
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
     log.add(error,header,raw=raw,c=c)
     if openlogfile:
