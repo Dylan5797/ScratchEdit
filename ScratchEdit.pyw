@@ -35,6 +35,7 @@ import traceback
 import json
 import webbrowser
 # Done imports
+args = sys.argv
 if args[1] == 'error':
     print(args[2])
     sys.stdin.readline(0)
