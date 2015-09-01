@@ -12,8 +12,7 @@ Please do not redistribute ScratchEdit with modified source code that does (or c
 - Disables update checking, because ScratchEdit is still in beta
 
 Please do not redistribute ScratchEdit if these conditions are not met:
-- It's not using external libraries.
 - It's using GitHub.
 - It won't execute filesystem operations outside of C:/ProgramData/ScratchEdit excluding file manipulation triggered and requested by the user.
 - It doesn't use files from the original ScratchEdit repository.
-- It gives credit to the original creators and developers.
+- It gives credit to the original creators and developers: Dylan5797, wizzwizz4
