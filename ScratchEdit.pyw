@@ -281,8 +281,8 @@ import urllib.request
 class raw_version_wget_threader:
     def thread_run(arg_url, arg_version, callback):
         def runInThread(url, version, callback):
-            r = urllib.request.urlopen(url).read().decode('utf-8')
-            if str(r).replace('\n','') != str(version):
+            r = urllib.request.urlopen(url).read().decode('utf-8').lower()
+            if str(r).replace('\n','') != str(version).lower():
                 callback(r)
             return
         thread = threading.Thread(target=runInThread, args=(arg_url, arg_version, callback))
