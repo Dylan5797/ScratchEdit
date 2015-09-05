@@ -29,6 +29,7 @@ import urllib.request
 import platform
 import threading
 import os
+import io
 import collections
 import zipfile
 import subprocess
@@ -850,21 +851,18 @@ def check(e=None):
 def save(e=None):
     if FILE_LOADED == True:
         try:
+            blank_zip = b'PK\x05\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
             log.add('Saving...')
             rd = zipfile.ZipFile(loadf, 'r')
-            pth = os.path.splitext(os.path.split(loadf)[0] + '\\ ~ ' + os.path.split(loadf)[1])[0] + '.tmp'
-            log.add('Saving from ' + str(pth) + ' is being used as reference') 
-            zin = zipfile.ZipFile(pth, 'w')
-            fn = 'c:\\file.txt'
-            p = os.popen('attrib +h ' + pth)
-            t = p.read()
-            p.close()
+            i = io.BytesIO(blank_zip)
+            log.add('Saving file. ' + str(i) + ' is being used as reference') 
+            zin = zipfile.ZipFile(i, 'w')
             for item in rd.infolist():
                 buffer = rd.read(item.filename)
                 zin.writestr(item, buffer)
             rd.close()
             zin.close()
-            zin = zipfile.ZipFile(pth, 'r')
+            zin = zipfile.ZipFile(i, 'r')
             zout = zipfile.ZipFile (loadf, 'w')
             for item in zin.infolist():
                 buffer = zin.read(item.filename)
@@ -878,7 +876,6 @@ def save(e=None):
             zout.writestr(LOADITM, ITEM)
             zout.close()
             zin.close()
-            os.remove(pth)
         except:
             rec = 'C:\\ProgramData\\ScratchEdit\\recoveredJSON-' + str(random.randint(100000000, 999999999)) + '.json'
             x = open(rec, 'w')
