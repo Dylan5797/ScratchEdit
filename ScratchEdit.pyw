@@ -1,7 +1,7 @@
 #ScratchEdit editor by Dylan Beswick
 global scratchBlocks
 global version
-version = '3.0.7-beta'
+version = '3.0.8-beta'
 scratchBlocks = {'procDef':{'t':"Custom Block: §1", 's':[1]}, 'whenGreenFlag':{'t':"When Green Flag Clicked", 's':[]}, 'whenIReceive':{'t':r"When I Receive: §1", 's':[1]}, 'doBroadcastAndWait':{'t':"Broadcast §1 and wait", 's':[1]}, 'broadcast:':{'t':"Broadcast §1", 's':[1]}, 'whenSensorGreaterThan':{'t':r"When §1 greater than §2", 's':[1,2]}, 'whenKeyPressed':{'t':"When §1 key pressed", 's':[1]}, 'whenClicked':{'t':"When this sprite clicked", 's':[]}, 'whenCloned':{'t':"When I start as a clone", 's':[]}, 'wait:elapsed:from:':{'t':"Wait §1 secs", 's':[1]}, 'doRepeat':{'t':"Repeat §1 Times >", 's':[1]}, 'doForever':{'t':"Repeat Forever >", 's':[]}, 'doIf':{'t':'If §1 >', 's':[1]}, 'doIfElse':{'t':'If §1 Else >', 's':[1]}, 'doWaitUntil':{'t':'Wait Until §1', 's':[1]}, 'doUntil':{'t':'Repeat Until §1>', 's':[1]}, 'stopScripts':{'t':'Stop §1', 's':[1]},
     'createCloneOf':{'t':'Create clone of §1', 's':[1]}, 'deleteClone':{'t':'Delete this clone', 's':[]}, 'touching:':{'t':'Touching §1', 's':[1]}, 'touchingColor:':{'t':'Touching color (int) §1', 's':[1]}, 'distanceTo:':{'t':'Distance to §1', 's':[1]}, 'color:sees:':{'t':'Colorid §1 is touching colorid §2', 's':[1, 2]}, 'doAsk':{'t':'Ask §1', 's':[1]}, 'answer':{'t':'Answer', 's':[]},
     'keyPressed:':{'t':'Key §1 pressed?', 's':[1]}, 'mousePressed':{'t':'Mouse Down?', 's':[]}, 'mouseX':{'t':'Mouse X', 's':[]}, 'mouseY':{'t':'Mouse Y', 's':[]}, 'soundLevel':{'t':'Loudness', 's':[]}, 'senseVideoMotion':{'t':'Video §1 on §2', 's':[1,2]}, 'setVideoState':{'t':'Turn video [§1]', 's':[1]},
