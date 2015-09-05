@@ -20,6 +20,7 @@ scratchBlocks = {'procDef':{'t':"Custom Block: §1", 's':[1]}, 'whenGreenFlag':{
     'setVar:to:':{'t':"Set §1 to §2", 's':[1,2]}, 'changeVar:by:':{'t':"Change §1 by §2", 's':[1,2]}, 'showVariable:':{'t':"Show Variable §1", 's':[1]}, 'hideVariable:':{'t':"Hide Variable §1", 's':[1]}, 'contentsOfList:':{'t':"List: §1", 's':[1]}, 'append:toList:':{'t':"Add §1 to §2", 's':[1,2]},
     'deleteLine:ofList:':{'t':"Delete §1 of §2", 's':[1,2]}, 'insert:at:ofList:':{'t':"Insert §1 at §2 of §3", 's':[1,2,3]}, 'setLine:ofList:to:':{'t':"Replace Item §1 of §2 with §3", 's':[1,2,3]} , 'getLine:ofList:':{'t':"Item §1 of list §2", 's':[1,2]}, 'lineCountOfList:':{'t':'Length of list: §1', 's':[1]},
     'list:contains:':{'t':"List §1 Contains §2", 's':[1,2]}, 'showList:':{'t':"Show List §1", 's':[1]}, 'hideList:':{'t':"Hide List §1", 's':[1]}, 'getParam':{'t':"Argument: §1", 's':[1]}}
+
 global FILE_LOADED
 FILE_LOADED = False
 import sys
@@ -32,6 +33,8 @@ import collections
 import zipfile
 import subprocess
 import traceback
+import random
+import pprint
 import json
 import webbrowser
 # Done imports
@@ -71,6 +74,8 @@ def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
         os.startfile(log.name)
     if sysexit:
         os._exit(1)
+global pp
+pp = pprint.PrettyPrinter(indent=4, compact=True)
 from tkinter import *
 from tkinter.ttk import *
 class _ScrolledText(Frame):
@@ -281,10 +286,16 @@ import urllib.request
 class raw_version_wget_threader:
     def thread_run(arg_url, arg_version, callback):
         def runInThread(url, version, callback):
-            r = urllib.request.urlopen(url).read().decode('utf-8').lower()
-            if str(r).replace('\n','') != str(version).lower():
-                callback(r)
-            return
+            try:
+                r = urllib.request.urlopen(url).read().decode('utf-8')
+                if str(r).replace('\n','') != str(version):
+                    callback(r)
+                    log.add('Latest version is v' + str(r) + '. Current version is v' + str(version) + '. Update available')
+                else:
+                    log.add('Latest version is v' + str(r) + '. Current version is v' + str(version) + '.')
+                return
+            except:
+                log.add('Update check failed.',header='ERROR')
         thread = threading.Thread(target=runInThread, args=(arg_url, arg_version, callback))
         thread.start()
 def api_update_check_se_callback(ver=None):
@@ -394,7 +405,7 @@ def load():
         try:
             zipf = zipfile.ZipFile(loadf)
         except:
-            log.add('[corruptScratchFile] [' + str(traceback.format_exc()) + ']')
+            crash('[corruptScratchFile]: Could not read archive [\n' + str(traceback.format_exc()) + ']')
         try:
             # regenerate_lb() -> Advance in explorer -> regenerate listbox -> edit items that are not explorable
             def regenerate_lb(goback=False):
@@ -632,10 +643,12 @@ def load():
                     back.config(state=NORMAL)
                 else:
                     back.config(state=DISABLED)
-                    
                 if sets['Update JSON Window Every Edit'.upper()]:
-                    txt.settext(dat)
-                
+                    tk.config(cursor='wait')
+                    txt.settext('Loading...')
+                    txt.update()
+                    txt.settext(pp.pformat(dat))
+                tk.config(cursor='')
             fil = os.path.splitext(os.path.split(zipf.filename)[1])[0] + '/project.json'
             try:
                 global LOADITM
@@ -672,9 +685,7 @@ def load():
                         save()
                     if not (a == None):
                         forcekill(syst=False)
-                        return True
-                    else:
-                        return False
+                    return a
             edw.protocol('WM_DELETE_WINDOW', areyousure)
             tk.protocol('WM_DELETE_WINDOW', areyousure)
             log.add('Protocols for WM_DELETE_WINDOW (X-Button Event) have been set')
@@ -701,7 +712,10 @@ def load():
             bt1.config(state=DISABLED)
             bt1.pack(side=LEFT)
             regenerate_lb()
-            txt.settext(dat)
+            tk.config(cursor='wait')
+            txt.settext(pp.pformat(dat))
+            txt.update()
+            tk.config(cursor='')
             def select():
                 try:
                     dep.append(lst[sel])
@@ -820,7 +834,7 @@ def load():
             print('*' * 60)
             traceback.print_exc(file=sys.stdout)
             print('*' * 60)
-            log.add('[GUI][CLIENT UPDATE]: E: EXCEPTION DURING CLIENT UPDATE:\n[' + str(traceback.format_exc()) + ']', header='ERROR')
+            log.add('Callback Error:\n[' + str(traceback.format_exc()) + ']', header='ERROR')
     else:
         FILE_LOADED = False
 def check(e=None):
@@ -866,7 +880,11 @@ def save(e=None):
             zin.close()
             os.remove(pth)
         except:
-            crash('ERROR! CHANGES NOT SAVED!!! EXCEPTION: [\n' + str(traceback.format_exc()) + '\n')
+            rec = 'C:\\ProgramData\\ScratchEdit\\recoveredJSON-' + str(random.randint(100000000, 999999999)) + '.json'
+            x = open(rec, 'w')
+            x.write(str(dat))
+            x.close()
+            crash('ERROR! CHANGES NOT SAVED!!! EXCEPTION: [\n' + str(traceback.format_exc()) + '\n JSON For Recovery follows: ' + rec)
         else:
             log.add('Sucessfully Saved')
     else:
@@ -897,16 +915,6 @@ def window_crd(e=None):
     cm.update()
     credit = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/master/Credits.txt').read().decode()
     t.settext(credit)
-def open_forum(e=None):
-    webbrowser.open_new('http://scratch.mit.edu/discuss/topic/76008/?page=1')
-def open_github(e=None):
-    webbrowser.open_new('https://github.com/Dylan5797/ScratchEdit/')
-def open_wiki(e=None):
-    webbrowser.open_new('https://github.com/Dylan5797/ScratchEdit/wiki')
-def open_website(e=None):
-    webbrowser.open_new('http://dylan5797.github.io/ScratchEdit/')
-def open_dylan5797(e=None):
-    webbrowser.open_new('https://sites.google.com/site/dylan5797scratch/')
 def forcekill(e=None, mtk=True, syst=True):
     log.add('Under forcekill() call. Destroying {"EditorWindow":"edw", "ValueEditor":"ky", "HelpScreen":"helps", "MainScratchEditWindow":"tk"}')
     try:
@@ -940,16 +948,28 @@ def quitit(e=None):
         forcekill()
 def doMainLoop():
     tk.mainloop()
+def delete_logs(e=None):
+    yesno = db.askyesno('Delete logs', 'Are you sure you want to delete the logs?')
+    if yesno:
+        for x in os.listdir(os.path.split(log.name)[0]):
+            if not (os.path.split(log.name)[0] + '\\' + x == log.name):
+                os.remove(os.path.split(log.name)[0] + '\\' + x)
 def sedini():
-    forcekill(syst=False)
-    subprocess.call(['notepad','C:\ProgramData\ScratchEdit\ScratchEdit.ini'])
-    os.startfile(__file__)
+    if FILE_LOADED:
+        a = areyousure()
+        if a == False:
+            a = True
+    else:
+        a = True
+    if a:
+        subprocess.call(['notepad','C:\ProgramData\ScratchEdit\ScratchEdit.ini'])
+        os.startfile(__file__)
 def generatewidgets():
     log.add('Attempting to make widgets')
     try:
         class hyperlink:
-            def __init__(self, url='', text='', mode='down'):
-                helpMenu.add_command(label=text, command=self._bind)
+            def __init__(self, menu, url='', text='', mode='down'):
+                menu.add_command(label=text, command=self._bind)
                 self.url = url
                 self.mode = mode
             def _bind(self, event=None):
@@ -958,42 +978,61 @@ def generatewidgets():
                     self.rt.title('')
                     self.t = _ScrolledText(self.rt, text='Loading...', wrap=True)
                     self.rt.update()
-                    self.credit = urllib.request.urlopen(self.url).read().decode()
+                    try:
+                        self.credit = urllib.request.urlopen(self.url).read().decode()
+                    except:
+                        db.showerror('Could Not Connect', 'Could not download help.')
+                        self.rt.destroy()
+                        return
                     self.t.settext(self.credit)
                 elif self.mode == 'open':
                     webbrowser.open_new(self.url)
         menubar = Menu(tk)
+
         fileMenu = Menu(tk)
-        forum = Menu(tk)
-        helpMenu = Menu(tk)
+        online = Menu(tk)
         creditMenu = Menu(tk)
         toolMenu = Menu(tk)
+        helpMenu = Menu(tk)
         loggingMenu = Menu(tk)
+        
         menubar.add_cascade(label="File", menu=fileMenu)
+        menubar.add_cascade(label="Online", menu=online)
+        menubar.add_cascade(label="Credits", menu=creditMenu)
+        menubar.add_cascade(label='Tools', menu=toolMenu)
+        menubar.add_cascade(label="Help", menu=helpMenu)
+        
         fileMenu.add_command(label="Load", command=check)
         fileMenu.add_command(label="Save", command=save)
         fileMenu.add_command(label="Close File", command=close_file)
+        fileMenu.add_separator()
         fileMenu.add_command(label="Exit", command=quitit)
-        menubar.add_cascade(label="Online", menu=forum)
-        menubar.add_cascade(label="Help", menu=helpMenu)
-        menubar.add_cascade(label="Credits", menu=creditMenu)
+        
         creditMenu.add_command(label="Credits", command=window_crd)
-        creditMenu.add_command(label="Dylan5797", command=open_dylan5797)
-        forum.add_cascade(label="Forum", command=open_forum)
-        forum.add_cascade(label="GitHub", command=open_github)
-        forum.add_cascade(label="Wiki", command=open_wiki)
-        forum.add_cascade(label="Website", command=open_website)
-        menubar.add_cascade(label='Tools', menu=toolMenu)
+        dylan5797 = hyperlink(menu=creditMenu, url='https://sites.google.com/site/dylan5797scratch/', text='Dylan5797', mode='open')
+        wizzwizz4 = hyperlink(menu=creditMenu, url='https://github.com/wizzwizz4', text='wizzwizz4', mode='open')
+
+        forumLink = hyperlink(menu=online, url='http://scratch.mit.edu/discuss/topic/76008/?page=1', text='Forum', mode='open')
+        githubLink = hyperlink(menu=online, url='https://github.com/Dylan5797/ScratchEdit/', text='GitHub', mode='open')
+        githubLink = hyperlink(menu=online, url='https://github.com/Dylan5797/ScratchEdit/wiki', text='Wiki', mode='open')
+        webLink = hyperlink(menu=online, url='http://dylan5797.github.io/ScratchEdit/', text='Website', mode='open')
+        
         toolMenu.add_cascade(label='Logging', menu=loggingMenu)
         toolMenu.add_command(label='Settings', command=sedini)
+        toolMenu.add_separator()
         toolMenu.add_command(label='Version ' + str(version))
-        toolMenu.entryconfig(3, state=DISABLED)
+        toolMenu.entryconfig(4, state=DISABLED)
+        
         loggingMenu.add_command(label='Log Folder', command=lambda: os.startfile(os.path.split(log.name)[0]))
-        dropdown = hyperlink('https://docs.google.com/spreadsheets/d/1uT1vHi6IUUaUix5y3k4p28p2No6pvLNKF_yrtrajEY4/view#gid=0', text='Hacking drop-down menus',mode='open')
-        lists = hyperlink('https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdLURkNGNzaUVSYWc', text='List FAQ')
-        dicts = hyperlink('https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdS0o3VU5lRGY3VGM', text='Dictionary FAQ')
-        ints = hyperlink('https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdMmp0WFBOOGUwWXM', text='Integer FAQ')
-        strs = hyperlink('https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdV2F6OVU1OWg2OE0', text='String FAQ')
+        loggingMenu.add_command(label='Delete Logs', command=delete_logs)
+        
+        dropdown = hyperlink(helpMenu, 'https://docs.google.com/spreadsheets/d/1uT1vHi6IUUaUix5y3k4p28p2No6pvLNKF_yrtrajEY4/view#gid=0', text='Hacking drop-down menus', mode='open')
+        helpMenu.add_separator()
+        lists = hyperlink(menu=helpMenu, url='https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdLURkNGNzaUVSYWc', text='List FAQ')
+        dicts = hyperlink(menu=helpMenu, url='https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdS0o3VU5lRGY3VGM', text='Dictionary FAQ')
+        ints = hyperlink(menu=helpMenu, url='https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdMmp0WFBOOGUwWXM', text='Integer FAQ')
+        strs = hyperlink(menu=helpMenu, url='https://drive.google.com/uc?export=download&id=0B_v6u8n56nAdV2F6OVU1OWg2OE0', text='String FAQ')
+        
         tk.configure(menu=menubar)
         global txt
         txt = _ScrolledText(tk)
