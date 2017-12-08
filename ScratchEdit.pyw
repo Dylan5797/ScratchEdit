@@ -1,5 +1,5 @@
 #!python3.4
-#ScratchEdit editor by Dylan Beswick
+"""ScratchEdit editor by Dylan Beswick"""
 global scratchBlocks
 global version
 version = '3.0.7-beta'
@@ -48,27 +48,38 @@ try:
         os._exit(1)
 except:
     pass
-    	
 
-fatalErr = False
-errText = ''
+def fatal_error(errors):
+    err_text = '\n'.join(errors) + 'Press return to close'
+    subprocess.call([sys.executable.replace('pythonw', 'python'),
+                     __file__, 'error', err_text])
+    sys.exit()
+
+#####################
+# Check environment #
+#####################
+
+errors = []
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
-    errText = errText + ('ScratchEdit is made for Python "v3.4.0" but your Python version is "' + platform.python_branch() + '"\n')
-    fatalErr = True
+    errors.append(('ScratchEdit is made for Python "v3.4.0" but your '
+                   'Python version is "{}"').format(platform.python_branch()))
+
 try:
     import tkinter
 except:
-    errText = errText + ('tkinter wasn\'t installed during Python installation!! ScratchEdit cannot be used if Python has not been installed with the official installer OR you have unchecked "Tcl/IDLE" in the installer. Please reinstall Python and do it right\n')
-    fatalErr = True
+    errors.append("tkinter wasn't installed during Python installation!! "
+                  "ScratchEdit cannot be used if Python has not been "
+                  "installed with the official installer OR you have "
+                  'unchecked "Tcl/IDLE" in the installer. '
+                  "Please reinstall Python and do it right.")
 else:
     del tkinter
+
 if not platform.uname().system == 'Windows':
-    errText = errText + ('You have to be using Windows to run ScratchEdit!\n')
-    fatalErr = True
-if fatalErr == True:
-    errText = errText + ('Press return to close')
-    subprocess.call([sys.executable.replace('pythonw','python'), __file__, 'error', errText])
-    sys.exit()
+    errors.append('You have to be using Windows to run ScratchEdit!')
+
+if errors:
+    fatal_error(errors)
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
     log.add(error,header,raw=raw,c=c)
