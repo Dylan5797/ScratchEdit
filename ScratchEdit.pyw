@@ -70,6 +70,29 @@ def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
     if sysexit:
         os._exit(1)
 
+def create_data_files(base_path = r'C:\ProgramData\ScratchEdit'):
+    # TODO: Don't hardcode base_path's default value - use `is None` idiom.
+    # PORT: base_path should autodetect based on OS.
+    for subdir in ('.logging',):  # Must contain at least one directory!
+        path = os.path.join(base_path, subdir)
+        if not os.path.isdir(path):
+            os.makedirs(path)
+    config_path = os.path.join(base_path, 'ScratchEdit.ini')
+    if not os.path.isfile(config_path):
+        with open(config_path, 'w') as fh:
+            fh.write('''# ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign.
+[Graphics]
+Show Script Formatting = True
+Text Size = 14
+Font = Arial
+Text Colour = Black
+
+[System]
+# This won't slow down ScratchEdit. It may take a little while to check though.
+Check For Update at Startup = True
+# You will have massive lag when viewing large Scratch Projects if this is set to true.
+Update JSON Window Every Edit = False''')
+
 ########## These exist solely to cushion the blow
 # Legacy # of having a full refactor all at once.
 ########## Remove them once they're no longer used.
@@ -130,11 +153,15 @@ if not platform.uname().system == 'Windows':
 if errors:
     fatal_error(errors)
 
+del errors
+
 global pp
 pp = pprint.PrettyPrinter(indent=4, compact=True)
 from tkinter import *
 from tkinter.ttk import *
 class _ScrolledText(Frame):
+    # TODO: tkinter.scrolledtext exists, but has different API.
+    #       Avoid reimplementing the wheel.
     def __init__(self, parent=None, text='', file=None, edit=False, wrap=False):
         Frame.__init__(self, parent)
         self.pack(expand=YES, fill=BOTH)
@@ -169,23 +196,8 @@ class _ScrolledText(Frame):
     def print(self, value, end='\n'):
         self.settext(self.gettext() + value + end)
 
-if not os.path.isdir('C:\\ProgramData\\ScratchEdit'):
-    os.makedirs('C:\\ProgramData\\ScratchEdit')
-    os.makedirs('C:\\ProgramData\\ScratchEdit\\.logging')
-    fh = open('C:\\ProgramData\\ScratchEdit\\ScratchEdit.ini', 'w')
-    fh.write('''# ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign.
-[Graphics]
-Show Script Formatting = True
-Text Size = 14
-Font = Arial
-Text Colour = Black
+create_data_files()
 
-[System]
-# This won't slow down ScratchEdit. It may take a little while to check though.
-Check For Update at Startup = True
-# You will have massive lag when viewing large Scratch Projects if this is set to true.
-Update JSON Window Every Edit = False''')
-    fh.close()
 time.sleep(0.01)
 import subprocess
 import threading
