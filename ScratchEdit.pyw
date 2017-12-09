@@ -39,21 +39,32 @@ import random
 import pprint
 import json
 import webbrowser
-# Done imports
-args = sys.argv
+# Done imports (except for some later on)
+
 try:
-    if args[1] == 'error':
-        print(args[2])
+    if sys.argv[1] == 'error':
+        print(sys.argv[2])
         sys.stdin.readline(0)
-        os._exit(1)
-except:
+        sys.exit(1)
+except IndexError:
     pass
 
+#########
+# utils #
+#########
+
 def fatal_error(errors):
-    err_text = '\n'.join(errors) + 'Press return to close'
+    err_text = '\n'.join(errors) + '\nPress return to close'
     subprocess.call([sys.executable.replace('pythonw', 'python'),
                      __file__, 'error', err_text])
     sys.exit()
+
+def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
+    log.add(error,header,raw=raw,c=c)
+    if openlogfile:
+        os.startfile(log.name)
+    if sysexit:
+        os._exit(1)
 
 #####################
 # Check environment #
@@ -81,12 +92,6 @@ if not platform.uname().system == 'Windows':
 if errors:
     fatal_error(errors)
 
-def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
-    log.add(error,header,raw=raw,c=c)
-    if openlogfile:
-        os.startfile(log.name)
-    if sysexit:
-        os._exit(1)
 global pp
 pp = pprint.PrettyPrinter(indent=4, compact=True)
 from tkinter import *
