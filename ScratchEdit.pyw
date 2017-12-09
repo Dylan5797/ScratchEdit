@@ -231,40 +231,46 @@ def api_update_check_se_callback(ver=None):
 sets = old_load_settings()
 
 class Log():
-    def __init__(self, text='ScratchEdit ' + str(version)):
+    def __init__(self, text='ScratchEdit ' + str(version),
+                 base_path = r'C:\ProgramData\ScratchEdit'):
         self.time = self.timestamp()
-        self.name = 'C:\\ProgramData\\ScratchEdit\\.logging\\' + self.time + '.txt'
-        a = open(self.name, 'w')
-        a.write(text + ' --' + self.timestamp(False) + '\n')
-        a.close()
+        self.name = os.path.join(base_path, '.logging', self.time + '.txt')
+        with open(self.name, 'w') as a:
+            a.write(text + ' --' + self.timestamp(False) + '\n')
+    
     def add(self, value, header='INFO', raw=False, c=True):
-        f = open(self.name)
-        if not raw:
-            if c:
-                ap = f.read() + self.timestamp(False) + ' [' + str(header) + ']: ' + str(value) + '\n'
+        with open(self.name, 'a') as f:
+            if raw:
+                f.write(str(value))
             else:
-                ap = f.read() + '\n' + self.timestamp().replace('-', '/') + ' [' + str(header) + ']' + str(value) + '\n'
-        else:
-            ap = f.read() + str(value)
-        f.close()
-        f = open(self.name, 'w+')
-        f.write(ap)
-        f.close()
-    def get_current_time(self, ff=True):
-        if ff:
+                if c:
+                    f.write("{} [{}]: {}\n".format(self.timestamp(False),
+                                                   header, value))
+                else:
+                    f.write("\n{} [{}]: {}\n".format(self.timestamp(False),
+                                                     header, value))
+
+    @staticmethod
+    def get_current_time(file_safe = True):
+        if file_safe:
             return time.strftime('[%H.%M.%S]')
         else:
             return time.strftime('[%H:%M:%S]')
-    def get_current_date(self, ff=True):
-        if ff:
+    
+    @staticmethod
+    def get_current_date(file_safe = True):
+        if file_safe:
             return time.strftime('[%y-%m-%d]')
         else:
             return time.strftime('[%y/%m/%d]')
-    def timestamp(self, ff=True):
-        if ff:
+
+    @staticmethod
+    def timestamp(self, file_safe = True):
+        if file_safe:
             return time.strftime('[%y-%m-%d %H.%M.%S]')
         else:
             return time.strftime('[%y/%m/%d %H:%M:%S]')
+
 import tkinter.messagebox as db
 import tkinter.filedialog
 import tkinter.simpledialog as sd
