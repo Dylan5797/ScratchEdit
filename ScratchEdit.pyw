@@ -80,7 +80,7 @@ if not int(platform.python_branch().replace('.','')[1:]) > 339:
 
 try:
     import tkinter
-except:
+except ImportError:
     errors.append("tkinter wasn't installed during Python installation!! "
                   "ScratchEdit cannot be used if Python has not been "
                   "installed with the official installer OR you have "
@@ -338,15 +338,15 @@ global sets
 sets = {}
 for x in set1:
     key = x.upper()
-    if str(set1[x]).lower() in ["true", "false"]:
-        value = eval(str(set1[x]).lower().capitalize())
+    if str(set1[x]).casefold() in ["true", "false"]:
+        # TODO: It's a bool already...
+        value = str(set1[x]).casefold() == "true"
     else:
+        # TODO: Refactor this
         try:
-            int(set1[x])
-        except:
-            value = set1[x]
-        else:
             value = int(set1[x])
+        except ValueError:
+            value = set1[x]
     sets[key] = value
 
 class Log():
@@ -440,7 +440,8 @@ def load():
                         break
                     try:
                         ls = ls[x]
-                    except:
+                    except KeyError:
+                        # TODO: Log this.
                         exec('ls = ls["""' + x + '"""]')
                 try:
                     if isinstance(ls[0], int) and isinstance(ls[1], int) and isinstance(ls[2], list):
