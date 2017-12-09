@@ -265,7 +265,7 @@ class Log():
             return time.strftime('[%y/%m/%d]')
 
     @staticmethod
-    def timestamp(self, file_safe = True):
+    def timestamp(file_safe = True):
         if file_safe:
             return time.strftime('[%y-%m-%d %H.%M.%S]')
         else:
