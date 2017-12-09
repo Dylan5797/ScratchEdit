@@ -93,6 +93,38 @@ Check For Update at Startup = True
 # You will have massive lag when viewing large Scratch Projects if this is set to true.
 Update JSON Window Every Edit = False''')
 
+def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
+                           'ScratchEdit/current-update/latestupdate.txt',
+                     current_version = version):
+    def run_in_thread(url, version):
+        try:
+            r = (urllib.request.urlopen(url).read()
+                 .decode('utf-8').replace('\n', ''))
+        except:
+            log.add('Update check failed.',header='ERROR')
+            return
+        log.add(('Latest version is v{}. '
+                 'Current version is v{}.').format(r, version))
+        if str(r) == version:
+            log.add('No update available.')
+            os._exit()
+        log.add('Update available. Prompting user.')
+        t = Tk()
+        t.withdraw()
+        if db.askyesno('ScratchEdit Update',
+                       'A Newer version of ScratchEdit is available: ' +
+                       r + '\nDo you want to install it?', master = t):
+            f = urllib.request.urlopen('https://raw.githubusercontent.com/'
+                                       'Dylan5797/ScratchEdit/master/'
+                                       'ScratchEdit.pyw').read()
+            with open(__file__, 'wb') as fr:
+                fr.write(f)
+            
+            os.startfile(__file__)
+            os._exit()
+    threading.Thread(target=run_in_thread,
+                     args=(url, version)).start()
+
 ########## These exist solely to cushion the blow
 # Legacy # of having a full refactor all at once.
 ########## Remove them once they're no longer used.
@@ -117,7 +149,7 @@ def old_load_settings():
                 raise KeyError(key)
             # Here be dragons.
             # Actually, heuristics. (Same thing.)
-            if any(subkey in key for subkey in BOOLS):
+            if any(subkey in key.casefold() for subkey in BOOLS):
                 return section.getboolean(key)
             if any(subkey in key for subkey in INTS):
                 return section.getint(key)
@@ -198,35 +230,7 @@ class _ScrolledText(Frame):
 
 create_data_files()
 
-time.sleep(0.01)
-import subprocess
-import threading
-import urllib.request
-class raw_version_wget_threader:
-    def thread_run(arg_url, arg_version, callback):
-        def runInThread(url, version, callback):
-            try:
-                r = urllib.request.urlopen(url).read().decode('utf-8').replace('\n', '')
-                if str(r).replace('\n','') != str(version):
-                    callback(r)
-                    log.add('Latest version is v' + str(r) + '. Current version is v' + str(version) + '. Update available')
-                else:
-                    log.add('Latest version is v' + str(r) + '. Current version is v' + str(version) + '.')
-                return
-            except:
-                log.add('Update check failed.',header='ERROR')
-        thread = threading.Thread(target=runInThread, args=(arg_url, arg_version, callback))
-        thread.start()
-def api_update_check_se_callback(ver=None):
-    t = Tk()
-    t.withdraw()
-    if db.askyesno('ScratchEdit Update', 'A Newer version of ScratchEdit is available: ' + str(ver) + '\nDo you want to install it?', master=t):
-        f = urllib.request.urlopen('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/master/ScratchEdit.pyw').read().decode('utf-8')
-        fr = open(__file__, 'w',encoding='utf8')
-        fr.write(f)
-        fr.close()
-        os.startfile(__file__)
-        os._exit(1)
+time.sleep(0.01)  # TODO: What is this for?!
 
 sets = old_load_settings()
 
@@ -274,8 +278,8 @@ class Log():
 import tkinter.messagebox as db
 import tkinter.filedialog
 import tkinter.simpledialog as sd
-if sets["Check For Update at Startup".upper()]:
-    raw_version_wget_threader.thread_run('https://raw.githubusercontent.com/Dylan5797/ScratchEdit/current-update/latestupdate.txt', str(version), api_update_check_se_callback)
+if sets["Check For Update at Startup"]:
+    check_for_update()
 tk = Tk()
 tk.focus()
 tk.title('ScratchEdit')
