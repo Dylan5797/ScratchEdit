@@ -1,8 +1,8 @@
 #!python3.4
-"""ScratchEdit editor by Dylan Beswick"""
+"""ScratchEdit editor by Dylan Beswick and wizzwizz4"""
 global scratchBlocks
 global version
-version = '3.0.7-beta'
+version = '4.0.0-beta'
 scratchBlocks = {'procDef':{'t':"Custom Block: §1", 's':[1]}, 'whenGreenFlag':{'t':"When Green Flag Clicked", 's':[]}, 'whenIReceive':{'t':r"When I Receive: §1", 's':[1]}, 'doBroadcastAndWait':{'t':"Broadcast §1 and wait", 's':[1]}, 'broadcast:':{'t':"Broadcast §1", 's':[1]}, 'whenSensorGreaterThan':{'t':r"When §1 greater than §2", 's':[1,2]}, 'whenKeyPressed':{'t':"When §1 key pressed", 's':[1]}, 'whenClicked':{'t':"When this sprite clicked", 's':[]}, 'whenCloned':{'t':"When I start as a clone", 's':[]}, 'wait:elapsed:from:':{'t':"Wait §1 secs", 's':[1]}, 'doRepeat':{'t':"Repeat §1 Times >", 's':[1]}, 'doForever':{'t':"Repeat Forever >", 's':[]}, 'doIf':{'t':'If §1 >', 's':[1]}, 'doIfElse':{'t':'If §1 Else >', 's':[1]}, 'doWaitUntil':{'t':'Wait Until §1', 's':[1]}, 'doUntil':{'t':'Repeat Until §1>', 's':[1]}, 'stopScripts':{'t':'Stop §1', 's':[1]},
     'createCloneOf':{'t':'Create clone of §1', 's':[1]}, 'deleteClone':{'t':'Delete this clone', 's':[]}, 'touching:':{'t':'Touching §1', 's':[1]}, 'touchingColor:':{'t':'Touching color (int) §1', 's':[1]}, 'distanceTo:':{'t':'Distance to §1', 's':[1]}, 'color:sees:':{'t':'Colorid §1 is touching colorid §2', 's':[1, 2]}, 'doAsk':{'t':'Ask §1', 's':[1]}, 'answer':{'t':'Answer', 's':[]},
     'keyPressed:':{'t':'Key §1 pressed?', 's':[1]}, 'mousePressed':{'t':'Mouse Down?', 's':[]}, 'mouseX':{'t':'Mouse X', 's':[]}, 'mouseY':{'t':'Mouse Y', 's':[]}, 'soundLevel':{'t':'Loudness', 's':[]}, 'senseVideoMotion':{'t':'Video §1 on §2', 's':[1,2]}, 'setVideoState':{'t':'Turn video [§1]', 's':[1]},
@@ -40,6 +40,7 @@ import pprint
 import json
 import webbrowser
 import argparse
+import configparser
 # Done imports (except for some later on)
 
 parser = argparse.ArgumentParser(add_help = False)
@@ -68,6 +69,40 @@ def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
         os.startfile(log.name)
     if sysexit:
         os._exit(1)
+
+########## These exist solely to cushion the blow
+# Legacy # of having a full refactor all at once.
+########## Remove them once they're no longer used.
+
+def old_load_settings():
+    """This function is deprecated. We're trying to migrate away from it."""
+    BOOLS = ("show", "check", "update")
+    INTS = ("size")
+    
+    class LegacyMapView:
+        """Do not ever use this class outside of its function."""
+        
+        def __init__(self, config):
+            self.config = config
+
+        def __getitem__(self, key):
+            for section_name in config.sections():
+                if key in config[section_name]:
+                    section = config[section_name]
+                    break
+            else:
+                raise KeyError(key)
+            # Here be dragons.
+            # Actually, heuristics. (Same thing.)
+            if any(subkey in key for subkey in BOOLS):
+                return section.getboolean(key)
+            if any(subkey in key for subkey in INTS):
+                return section.getint(key)
+            return section[key]
+    
+    config = configparser.ConfigParser()
+    config.read(r"C:\ProgramData\ScratchEdit\ScratchEdit.ini")
+    return LegacyMapView(config)
 
 #####################
 # Check environment #
@@ -133,155 +168,6 @@ class _ScrolledText(Frame):
         return self.text.get('1.0', END + '-1c')
     def print(self, value, end='\n'):
         self.settext(self.gettext() + value + end)
-class ini:
-    "Class for manipulating .ini files"
-    def __init__(self, ini):
-        "Read ini from file object or string given -> ini object"
-        if str(ini)[:18] == '<_io.TextIOWrapper':
-            if ini.mode == 'r':
-                data = ini.read()
-                ini.close()
-            else:
-                invalidFileOperationMode = 'File object does not support reading ("r") mode'
-                raise ValueError(invalidFileOperationMode)
-        else:
-            if type(ini) == str:
-                data = ini
-            else:
-                invalidObjectType = 'Expected "str" or "_io.TextIOWrapper" but got ' + (str(ini.__class__).split()[1][:-1])
-                raise TypeError(invalidObjectType)
-        data = str(data).rsplit(sep='\n')
-        output = {"__default__":{}}
-        currentPosition = "__default__"
-        currentGroup = 0
-        lines = [{"id":"__default__", "subObjects":[]}]
-        lineNumber = -1
-        for x in data:
-            lineNumber = lineNumber + 1
-            if (str(x).replace(' ', '') != '') and (str(x)[0] != '#'):
-                if x[0] == '[':
-                    st = ''
-                    for y in x:
-                        if y == ']':
-                            break
-                        elif y != '[':
-                            st = st + y
-                    currentPosition = st
-                    lines.append({"id":st, "subObjects":[]})
-                    currentGroup = currentGroup + 1
-                    output[currentPosition] = {}
-                else:
-                    key = ''
-                    val = ''
-                    mode = 'key'
-                    counter = -1
-                    for z in x:
-                        counter = counter + 1
-                        if mode == 'key':
-                            if z == '=':
-                                mode = 'value'
-                                continue
-                            elif z == ' ':
-                                try:
-                                    if x[counter + 1] != '=':
-                                        key = key + z
-                                except:
-                                    pass
-                            else:
-                                key = key + z
-                        if mode == 'value':
-                            if z == ' ':
-                                try:
-                                    if x[counter - 1] != '=':
-                                        val = val + z
-                                except:
-                                    pass
-                            else:
-                                val = val + z
-                    lines[currentGroup]["subObjects"].append(key)
-                    try:
-                        value1 = eval(val)
-                    except:
-                        value1 = val
-                    output[currentPosition][key] = value1
-            else:
-                if str(x).replace(' ','') != '':
-                    if str(x)[0] == '#':
-                        lines[currentGroup]["subObjects"].append({"comment":str(x)})
-        self._orderIndex = lines
-        self.ini = output
-
-    def dump(self, ini, file=None):
-        "Write ini to file or return ini syntax if file argument not given"
-        if ini.__class__ != dict:
-            badIni = 'Expected "dict" but got ' + (str(ini.__class__).split()[1][:-1])
-            raise TypeError(badIni)
-        default = ini["__default__"]
-        self.specified = ini
-        del self.specified["__default__"]
-        iniText = ''
-        if default != {}:
-            run = True
-        else:
-            run = False
-        for x in self._orderIndex[0]["subObjects"]:
-            try:
-                if isinstance(x, dict):
-                    if "comment" in x:
-                        iniText = iniText + x["comment"] + '\n'
-                else:
-                    iniText = iniText + str(x) + ' = ' + str(default[x]) + '\n'
-                    del default[x]
-            except:
-                traceback.print_exc()
-        for x in default:
-            if not (x in self._orderindex[0]):
-                iniText = iniText + str(x) + ' = ' + str(default[x]) + '\n'
-        if run:
-            iniText = iniText + '\n'
-        for x in self._orderIndex:
-            if x["id"] != "__default__":
-                try:
-                    iniText = iniText + '[' + str(x["id"]) + ']\n'
-                    for y in x["subObjects"]:
-                        try:
-                            if isinstance(y, dict):
-                                if "comment" in y:
-                                    iniText = iniText + y["comment"] + '\n'
-                            else:
-                                iniText = iniText + str(y) + ' = ' + str(self.specified[x["id"]][y]) + '\n'
-                                del self.specified[x["id"]][y]
-                        except:
-                            traceback.print_exc()
-                    for y in self.specified[x["id"]]:
-                        try:
-                            iniText = iniText + str(y) + ' = ' + str(self.specified[x["id"]][y]) + '\n'
-                        except:
-                            pass
-                    del self.specified[x["id"]]
-                    iniText = iniText + '\n'
-                except:
-                    pass
-
-        for x in self.specified:
-            iniText = iniText + '[' + str(x) + ']\n'
-            for y in self.specified[x]:
-                iniText = iniText + str(y) + ' = ' + str(self.specified[x][y]) + '\n'
-            iniText = iniText + '\n'
-            
-        if file:
-            if str(file)[:18] == '<_io.TextIOWrapper':
-                if (not (file.mode == 'w')) and (not (file.mode == 'w+')):
-                    invalidFileOperationMode = 'File object does not support writing ("w"/"w+") mode'
-                    raise ValueError(invalidFileOperationMode)
-            else:
-                invalidObjectType = 'Expected "_io.TextIOWrapper" but got ' + (str(file.__class__).split()[1][:-1])
-                raise TypeError(invalidObjectType)
-            file.write(iniText)
-            file.close()
-        else:
-            return iniText
-
 
 if not os.path.isdir('C:\\ProgramData\\ScratchEdit'):
     os.makedirs('C:\\ProgramData\\ScratchEdit')
@@ -329,25 +215,8 @@ def api_update_check_se_callback(ver=None):
         fr.close()
         os.startfile(__file__)
         os._exit(1)
-set0 = ini(open("C:\\ProgramData\\ScratchEdit\\ScratchEdit.ini")).ini
-set1 = {}
-for x in set0:
-    if x != '__default__':
-        set1.update(set0[x])
-global sets
-sets = {}
-for x in set1:
-    key = x.upper()
-    if str(set1[x]).casefold() in ["true", "false"]:
-        # TODO: It's a bool already...
-        value = str(set1[x]).casefold() == "true"
-    else:
-        # TODO: Refactor this
-        try:
-            value = int(set1[x])
-        except ValueError:
-            value = set1[x]
-    sets[key] = value
+
+sets = old_load_settings()
 
 class Log():
     def __init__(self, text='ScratchEdit ' + str(version)):
