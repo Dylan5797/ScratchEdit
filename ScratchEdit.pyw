@@ -39,15 +39,18 @@ import random
 import pprint
 import json
 import webbrowser
+import argparse
 # Done imports (except for some later on)
 
-try:
-    if sys.argv[1] == 'error':
-        print(sys.argv[2])
-        sys.stdin.readline(0)
-        sys.exit(1)
-except IndexError:
-    pass
+parser = argparse.ArgumentParser(add_help = False)
+parser.add_argument('--error', required = False)
+args = parser.parse_args()
+del parser  # Possibly suggests that this should be a utility function.
+
+if args.error is not None:
+    print(args.error)
+    sys.stdin.readline(0)  # Wait for user.
+    sys.exit(1)
 
 #########
 # utils #
@@ -56,7 +59,7 @@ except IndexError:
 def fatal_error(errors):
     err_text = '\n'.join(errors) + '\nPress return to close'
     subprocess.call([sys.executable.replace('pythonw', 'python'),
-                     __file__, 'error', err_text])
+                     __file__, '--error', err_text])
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
