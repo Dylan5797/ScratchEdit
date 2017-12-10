@@ -41,7 +41,7 @@ if args.error is not None:
 #########
 
 def fatal_error(errors):
-    err_text = '\n'.join(errors) + '\nPress return to close'
+    err_text = '\n'.join(errors) + '\n' + UI_("Press return to close")
     subprocess.call([sys.executable.replace('pythonw', 'python'),
                      __file__, '--error', err_text])
     sys.exit()
@@ -63,7 +63,7 @@ def create_data_files(base_path = r'C:\ProgramData\ScratchEdit'):
     config_path = os.path.join(base_path, 'ScratchEdit.ini')
     if not os.path.isfile(config_path):
         with open(config_path, 'w') as fh:
-            fh.write('''# ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign.
+            fh.write('''# ''' + UI_("ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign." + '''
 [Graphics]
 Show Script Formatting = True
 Text Size = 14
@@ -71,9 +71,9 @@ Font = Arial
 Text Colour = Black
 
 [System]
-# This won't slow down ScratchEdit. It may take a little while to check though.
+# ''' + UI_("This won't slow down ScratchEdit. It may take a little while to check though.") + '''
 Check For Update at Startup = True
-# You will have massive lag when viewing large Scratch Projects if this is set to true.
+# ''' + UI_("You will have massive lag when viewing large Scratch Projects if this is set to true.") + '''
 Update JSON Window Every Edit = False''')
 
 def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
@@ -94,9 +94,9 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
         log.add('Update available. Prompting user.')
         t = Tk()
         t.withdraw()
-        if db.askyesno('ScratchEdit Update',
-                       'A Newer version of ScratchEdit is available: ' +
-                       r + '\nDo you want to install it?', master = t):
+        if db.askyesno(UI_('ScratchEdit Update'),
+                       UI_('A Newer version of ScratchEdit is available: {}\n'
+                           'Do you want to install it?'.format(r), master = t):
             f = urllib.request.urlopen('https://raw.githubusercontent.com/'
                                        'Dylan5797/ScratchEdit/master/'
                                        'ScratchEdit.pyw').read()
@@ -202,22 +202,23 @@ scratchBlocks = old_scratchBlocks(block_parameters)
 
 errors = []
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
-    errors.append(('ScratchEdit is made for Python "v3.4.0" but your '
-                   'Python version is "{}"').format(platform.python_branch()))
+    errors.append(UI_('ScratchEdit is made for Python "v3.4.0" but your '
+                      'Python version is "{}"').format(
+                          platform.python_branch()))
 
 try:
     import tkinter
 except ImportError:
-    errors.append("tkinter wasn't installed during Python installation!! "
-                  "ScratchEdit cannot be used if Python has not been "
-                  "installed with the official installer OR you have "
-                  'unchecked "Tcl/IDLE" in the installer. '
-                  "Please reinstall Python and do it right.")
+    errors.append(UI_("tkinter wasn't installed during Python installation!! "
+                      "ScratchEdit cannot be used if Python has not been "
+                      "installed with the official installer OR you have "
+                      'unchecked "Tcl/IDLE" in the installer. '
+                      "Please reinstall Python and do it right."))
 else:
     del tkinter
 
 if not platform.uname().system == 'Windows':
-    errors.append('You have to be using Windows to run ScratchEdit!')
+    errors.append(UI_('You have to be using Windows to run ScratchEdit!'))
 
 if errors:
     fatal_error(errors)
@@ -272,7 +273,7 @@ time.sleep(0.01)  # TODO: What is this for?!
 sets = old_load_settings()
 
 class Log():
-    def __init__(self, text='ScratchEdit ' + str(version),
+    def __init__(self, text = 'ScratchEdit {}'.format(version),
                  base_path = r'C:\ProgramData\ScratchEdit'):
         self.time = self.timestamp()
         self.name = os.path.join(base_path, '.logging', self.time + '.txt')
@@ -319,7 +320,7 @@ if sets["Check For Update at Startup"]:
     check_for_update()
 tk = Tk()
 tk.focus()
-tk.title('ScratchEdit')
+tk.title(UI_('ScratchEdit'))
 global log
 log = Log()
 log.add('Successfully imported all modules')
@@ -347,7 +348,8 @@ def load():
     global FILE_LOADED
     FILE_LOADED = True
     global loadf
-    loadf = tkinter.filedialog.askopenfilename(filetypes=[('Scratch Projects','sb2')])
+    loadf = tkinter.filedialog.askopenfilename(
+        filetypes = [(UI_('Scratch Projects'), 'sb2')])
     if os.path.isfile(loadf):
         log.add('Ready to read file at "' + loadf + '" ')
         global zipf
@@ -404,6 +406,7 @@ def load():
                             lp = 0
                             FONTSIZE = 18
                             for x in ls:
+                                # TODO: Reduce nesting.
                                 try:
                                     if not sets["SHOW SCRIPT FORMATTING"]:
                                         raise TypeError()
