@@ -149,13 +149,20 @@ old_ui_translations = {}
 
 import functools
 @functools.lru_cache(None)
-def _(s, tables = (old_block_translations, old_ui_translations)):
-    for table in tables:
-        try:
-            return table[s]
-        except KeyError:
-            continue
-    log.add("Failed to translate {!r}".format(s))
+def SB_(s):
+    try:
+        return old_block_translations[s]
+    except KeyError:
+        pass
+    log.add("Failed to translate block {!r}".format(s))
+    return s
+@functools.lru_cache(None)
+def UI_(s):
+    try:
+        return old_ui_translations[s]
+    except KeyError:
+        pass
+    log.add("Failed to translate UI {!r}".format(s))
     return s
 
 def old_scratchBlocks(block_parameters):
@@ -175,7 +182,7 @@ def old_scratchBlocks(block_parameters):
 
         def __getitem__(self, key):
             return {
-                't': _(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
+                't': SB_(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
                 's': list(range(1, len(self.params[key]) + 1))
             }
 
