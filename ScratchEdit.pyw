@@ -3,24 +3,7 @@
 global scratchBlocks
 global version
 version = '4.0.0-beta'
-scratchBlocks = {'procDef':{'t':"Custom Block: §1", 's':[1]}, 'whenGreenFlag':{'t':"When Green Flag Clicked", 's':[]}, 'whenIReceive':{'t':r"When I Receive: §1", 's':[1]}, 'doBroadcastAndWait':{'t':"Broadcast §1 and wait", 's':[1]}, 'broadcast:':{'t':"Broadcast §1", 's':[1]}, 'whenSensorGreaterThan':{'t':r"When §1 greater than §2", 's':[1,2]}, 'whenKeyPressed':{'t':"When §1 key pressed", 's':[1]}, 'whenClicked':{'t':"When this sprite clicked", 's':[]}, 'whenCloned':{'t':"When I start as a clone", 's':[]}, 'wait:elapsed:from:':{'t':"Wait §1 secs", 's':[1]}, 'doRepeat':{'t':"Repeat §1 Times >", 's':[1]}, 'doForever':{'t':"Repeat Forever >", 's':[]}, 'doIf':{'t':'If §1 >', 's':[1]}, 'doIfElse':{'t':'If §1 Else >', 's':[1]}, 'doWaitUntil':{'t':'Wait Until §1', 's':[1]}, 'doUntil':{'t':'Repeat Until §1>', 's':[1]}, 'stopScripts':{'t':'Stop §1', 's':[1]},
-    'createCloneOf':{'t':'Create clone of §1', 's':[1]}, 'deleteClone':{'t':'Delete this clone', 's':[]}, 'touching:':{'t':'Touching §1', 's':[1]}, 'touchingColor:':{'t':'Touching color (int) §1', 's':[1]}, 'distanceTo:':{'t':'Distance to §1', 's':[1]}, 'color:sees:':{'t':'Colorid §1 is touching colorid §2', 's':[1, 2]}, 'doAsk':{'t':'Ask §1', 's':[1]}, 'answer':{'t':'Answer', 's':[]},
-    'keyPressed:':{'t':'Key §1 pressed?', 's':[1]}, 'mousePressed':{'t':'Mouse Down?', 's':[]}, 'mouseX':{'t':'Mouse X', 's':[]}, 'mouseY':{'t':'Mouse Y', 's':[]}, 'soundLevel':{'t':'Loudness', 's':[]}, 'senseVideoMotion':{'t':'Video §1 on §2', 's':[1,2]}, 'setVideoState':{'t':'Turn video [§1]', 's':[1]},
-    'setVideoTransparency':{'t':"Set Video Transparency To §1%", 's':[1]}, 'timer':{'t':"Timer", 's':[]}, 'timerReset':{'t':"Reset Timer", 's':[]}, 'getAttribute:of:':{'t':"§1 of §2", 's':[1,2]}, 'timeAndDate':{'t':"Current §1", 's':[1]}, 'timestamp':{'t':'Days since 2000', 's':[]}, 'getUserName':{'t':"Username", 's':[]},
-    '+':{'t':"§1 + §2", 's':[1,2]}, '-':{'t':"§1 - §2", 's':[1,2]}, '*':{'t':"§1 * §2", 's':[1,2]}, '/':{'t':"§1 / §2", 's':[1,2]}, 'randomFrom:to:':{'t':"Pick random from §1 to §2", 's':[1,2]}, '>':{'t':"§1 > §2", 's':[1, 2]}, '<':{'t':"§1 < §2", 's':[1, 2]}, '=':{'t':"§1 = §2",'s':[1, 2]}, '&':{'t':"§1 and §2", 's':[1,2]}, '|':{'t':"§1 or §2", 's':[1,2]}, 'not':{'t':"Not §1", 's':[1]}, 'concatenate:with:':{'t':"Join §1 §2", 's':[1,2]}, 'letter:of:':{'t':"Letter §1 of §2", 's':[1,2]} ,
-    'stringLength:':{'t':"Length of §1", 's':[1]}, '%':{'t':"§1 mod §2", 's':[1,2]}, 'rounded':{'t':"Round §1", 's':[1]}, 'computeFunction:of:':{'t':"§1 of §2", 's':[1,2]}, 'call':{'t':"§1", 's':[1]}, 'forward:':{'t':"Move §1 steps", 's':[1]}, 'turnRight:':{'t':"Rotate §1 degrees clockwise", 's':[1]}, 'turnLeft:':{'t':"Rotate §1 degrees counterclockwise", 's':[1]},
-    'heading:':{'t':"Point in direction §1", 's':[1]}, 'pointTowards:':{'t':"Point Towards §1", 's':[1]}, 'gotoX:y:':{'t':"Goto X: §1 Y: §2", 's':[1,2]}, 'gotoSpriteOrMouse:':{'t':"Go to §1", 's':[1]}, 'glideSecs:toX:y:elapsed:from:':{'t':"Glide §3 secs to X: §1 Y: §2", 's':[1,2,3]},
-    'changeXposBy:':{'t':"Change X by §1", 's':[1]}, 'xpos:':{'t':"Set X to §1", 's':[1]}, 'changeYposBy:':{'t':"Change Y by §1", 's':[1]}, 'ypos:':{'t':"Set Y to §1", 's':[1]}, 'bounceOffEdge':{'t':"If on edge, bounce", 's':[]}, 'setRotationStyle':{'t':'Set rotation style §1', 's':[1]}, 'xpos':{'t':"X position", 's':[]}, 'ypos':{'t':"Y position", 's':[]},
-    'heading':{'t':"Direction", 's':[]}, 'say:duration:elapsed:from:':{'t':"Say §1 for §2 secs", 's':[1,2]}, 'say:':{'t':"Say §1", 's':[1]}, 'think:duration:elapsed:from:':{'t':"Think §1 for §2 secs", 's':[1,2]}, 'think:':{'t':"Think §1", 's':[1]}, 'show':{'t':"Show", 's':[]}, 'hide':{'t':"Hide",'s':[]},
-    'lookLike:':{'t':"Switch costume to §1", 's':[1]}, 'nextCostume':{'t':"Next Costume", 's':[]}, 'startScene':{'t':"Switch backdrop to §1", 's':[1]}, 'changeGraphicEffect:by:':{'t':"Change §1 effect by §2", 's':[1,2]}, 'setGraphicEffect:to:':{'t':"Set §1 effect to §2", 's':[1,2]}, 'filterReset':{'t':"Clear Graphic Effects", 's':[]},
-    'changeSizeBy:':{'t':'Change Size by §1%', 's':[1]}, 'setSizeTo:':{'t':'Set size to §1%', 's':[1]}, 'comeToFront':{'t':'Go to front', 's':[]}, 'goBackByLayers:':{'t':"Go back §1 layers", 's':[1]}, 'costumeIndex':{'t':'Costume #','s':[]}, 'sceneName':{'t':"Backdrop name", 's':[]}, 'scale':{'t':'Size', 's':[]},
-    'playSound:':{'t':'Play sound §1', 's':[1]}, 'doPlaySoundAndWait':{'t':'Play sound §1 and wait', 's':[1]}, 'stopAllSounds':{'t':'Stop all sounds', 's':[]}, 'playDrum':{'t':'Play drum §1 for §2 beats', 's':[1,2]}, 'rest:elapsed:from:':{'t':'Rest for §1 beats', 's':[1]},
-    'noteOn:duration:elapsed:from:':{'t':'Play note §1 for §2 beats', 's':[1,2]}, 'instrument:':{'t':'Set Instrument to §1', 's':[1]}, 'changeVolumeBy:':{'t':'Change Volume by §1', 's':[1]}, 'setVolumeTo:':{'t':'Set Volume To §1', 's':[1]}, 'volume':{'t':'Volume', 's':[]}, 'changeTempoBy:':{'t':'Change tempo by §1', 's':[1]},
-    'setTempoTo:':{'t':'Set tempo to §1', 's':[1]}, 'tempo':{'t':'Tempo', 's':[]}, 'stampCostume':{'t':'Stamp', 's':[]}, 'putPenDown':{'t':'Pen Down', 's':[]}, 'clearPenTrails':{'t':'Clear', 's':[]}, 'putPenUp':{'t':'Pen Up', 's':[]}, 'penColor:':{'t':'Set pen colour (number) to §1', 's':[1]}, 'changePenHueBy:':{'t':'Change pen colour by §1', 's':[1]},
-    'setPenHueTo:':{'t':"Set pen colour to §1", 's':[1]}, 'changePenShadeBy:':{'t':"Change pen shade by §1", 's':[1]}, 'setPenShadeTo:':{'t':"Set pen shade to §1", 's':[1]}, 'changePenSizeBy:':{'t':"Change pen size by §1", 's':[1]}, 'penSize:':{'t':"Set pen size to §1", 's':[1]}, 'readVariable':{'t':"Variable: §1", 's':[1]},
-    'setVar:to:':{'t':"Set §1 to §2", 's':[1,2]}, 'changeVar:by:':{'t':"Change §1 by §2", 's':[1,2]}, 'showVariable:':{'t':"Show Variable §1", 's':[1]}, 'hideVariable:':{'t':"Hide Variable §1", 's':[1]}, 'contentsOfList:':{'t':"List: §1", 's':[1]}, 'append:toList:':{'t':"Add §1 to §2", 's':[1,2]},
-    'deleteLine:ofList:':{'t':"Delete §1 of §2", 's':[1,2]}, 'insert:at:ofList:':{'t':"Insert §1 at §2 of §3", 's':[1,2,3]}, 'setLine:ofList:to:':{'t':"Replace Item §1 of §2 with §3", 's':[1,2,3]} , 'getLine:ofList:':{'t':"Item §1 of list §2", 's':[1,2]}, 'lineCountOfList:':{'t':'Length of list: §1', 's':[1]},
-    'list:contains:':{'t':"List §1 Contains §2", 's':[1,2]}, 'showList:':{'t':"Show List §1", 's':[1]}, 'hideList:':{'t':"Hide List §1", 's':[1]}, 'getParam':{'t':"Argument: §1", 's':[1]}}
+block_parameters = {'procDef': ('*',), 'whenGreenFlag': (), 'whenIReceive': ('*',), 'doBroadcastAndWait': ('*',), 'broadcast:': ('*',), 'whenSensorGreaterThan': ('*', '*'), 'whenKeyPressed': ('*',), 'whenClicked': (), 'whenCloned': (), 'wait:elapsed:from:': ('*',), 'doRepeat': ('*',), 'doForever': (), 'doIf': ('*',), 'doIfElse': ('*',), 'doWaitUntil': ('*',), 'doUntil': ('*',), 'stopScripts': ('*',), 'createCloneOf': ('*',), 'deleteClone': (), 'touching:': ('*',), 'touchingColor:': ('*',), 'distanceTo:': ('*',), 'color:sees:': ('*', '*'), 'doAsk': ('*',), 'answer': (), 'keyPressed:': ('*',), 'mousePressed': (), 'mouseX': (), 'mouseY': (), 'soundLevel': (), 'senseVideoMotion': ('*', '*'), 'setVideoState': ('*',), 'setVideoTransparency': ('*',), 'timer': (), 'timerReset': (), 'getAttribute:of:': ('*', '*'), 'timeAndDate': ('*',), 'timestamp': (), 'getUserName': (), '+': ('*', '*'), '-': ('*', '*'), '*': ('*', '*'), '/': ('*', '*'), 'randomFrom:to:': ('*', '*'), '>': ('*', '*'), '<': ('*', '*'), '=': ('*', '*'), '&': ('*', '*'), '|': ('*', '*'), 'not': ('*',), 'concatenate:with:': ('*', '*'), 'letter:of:': ('*', '*'), 'stringLength:': ('*',), '%': ('*', '*'), 'rounded': ('*',), 'computeFunction:of:': ('*', '*'), 'call': ('*',), 'forward:': ('*',), 'turnRight:': ('*',), 'turnLeft:': ('*',), 'heading:': ('*',), 'pointTowards:': ('*',), 'gotoX:y:': ('*', '*'), 'gotoSpriteOrMouse:': ('*',), 'glideSecs:toX:y:elapsed:from:': ('*', '*', '*'), 'changeXposBy:': ('*',), 'xpos:': ('*',), 'changeYposBy:': ('*',), 'ypos:': ('*',), 'bounceOffEdge': (), 'setRotationStyle': ('*',), 'xpos': (), 'ypos': (), 'heading': (), 'say:duration:elapsed:from:': ('*', '*'), 'say:': ('*',), 'think:duration:elapsed:from:': ('*', '*'), 'think:': ('*',), 'show': (), 'hide': (), 'lookLike:': ('*',), 'nextCostume': (), 'startScene': ('*',), 'changeGraphicEffect:by:': ('*', '*'), 'setGraphicEffect:to:': ('*', '*'), 'filterReset': (), 'changeSizeBy:': ('*',), 'setSizeTo:': ('*',), 'comeToFront': (), 'goBackByLayers:': ('*',), 'costumeIndex': (), 'sceneName': (), 'scale': (), 'playSound:': ('*',), 'doPlaySoundAndWait': ('*',), 'stopAllSounds': (), 'playDrum': ('*', '*'), 'rest:elapsed:from:': ('*',), 'noteOn:duration:elapsed:from:': ('*', '*'), 'instrument:': ('*',), 'changeVolumeBy:': ('*',), 'setVolumeTo:': ('*',), 'volume': (), 'changeTempoBy:': ('*',), 'setTempoTo:': ('*',), 'tempo': (), 'stampCostume': (), 'putPenDown': (), 'clearPenTrails': (), 'putPenUp': (), 'penColor:': ('*',), 'changePenHueBy:': ('*',), 'setPenHueTo:': ('*',), 'changePenShadeBy:': ('*',), 'setPenShadeTo:': ('*',), 'changePenSizeBy:': ('*',), 'penSize:': ('*',), 'readVariable': ('*',), 'setVar:to:': ('*', '*'), 'changeVar:by:': ('*', '*'), 'showVariable:': ('*',), 'hideVariable:': ('*',), 'contentsOfList:': ('*',), 'append:toList:': ('*', '*'), 'deleteLine:ofList:': ('*', '*'), 'insert:at:ofList:': ('*', '*', '*'), 'setLine:ofList:to:': ('*', '*', '*'), 'getLine:ofList:': ('*', '*'), 'lineCountOfList:': ('*',), 'list:contains:': ('*', '*'), 'showList:': ('*',), 'hideList:': ('*',), 'getParam': ('*',)}
 
 global FILE_LOADED
 FILE_LOADED = False
@@ -158,6 +141,58 @@ def old_load_settings():
     config = configparser.ConfigParser()
     config.read(r"C:\ProgramData\ScratchEdit\ScratchEdit.ini")
     return LegacyMapView(config)
+
+# scratchBlocks and translation #
+
+old_block_translations = {'procDef': 'Custom Block: {}', 'whenGreenFlag': 'When Green Flag Clicked', 'whenIReceive': 'When I Receive: {}', 'doBroadcastAndWait': 'Broadcast {} and wait', 'broadcast:': 'Broadcast {}', 'whenSensorGreaterThan': 'When {} greater than {}', 'whenKeyPressed': 'When {} key pressed', 'whenClicked': 'When this sprite clicked', 'whenCloned': 'When I start as a clone', 'wait:elapsed:from:': 'Wait {} secs', 'doRepeat': 'Repeat {} Times >', 'doForever': 'Repeat Forever >', 'doIf': 'If {} >', 'doIfElse': 'If {} Else >', 'doWaitUntil': 'Wait Until {}', 'doUntil': 'Repeat Until {}>', 'stopScripts': 'Stop {}', 'createCloneOf': 'Create clone of {}', 'deleteClone': 'Delete this clone', 'touching:': 'Touching {}', 'touchingColor:': 'Touching color (int) {}', 'distanceTo:': 'Distance to {}', 'color:sees:': 'Colorid {} is touching colorid {}', 'doAsk': 'Ask {}', 'answer': 'Answer', 'keyPressed:': 'Key {} pressed?', 'mousePressed': 'Mouse Down?', 'mouseX': 'Mouse X', 'mouseY': 'Mouse Y', 'soundLevel': 'Loudness', 'senseVideoMotion': 'Video {} on {}', 'setVideoState': 'Turn video [{}]', 'setVideoTransparency': 'Set Video Transparency To {}%', 'timer': 'Timer', 'timerReset': 'Reset Timer', 'getAttribute:of:': '{} of {}', 'timeAndDate': 'Current {}', 'timestamp': 'Days since 2000', 'getUserName': 'Username', '+': '{} + {}', '-': '{} - {}', '*': '{} * {}', '/': '{} / {}', 'randomFrom:to:': 'Pick random from {} to {}', '>': '{} > {}', '<': '{} < {}', '=': '{} = {}', '&': '{} and {}', '|': '{} or {}', 'not': 'Not {}', 'concatenate:with:': 'Join {} {}', 'letter:of:': 'Letter {} of {}', 'stringLength:': 'Length of {}', '%': '{} mod {}', 'rounded': 'Round {}', 'computeFunction:of:': '{} of {}', 'call': '{}', 'forward:': 'Move {} steps', 'turnRight:': 'Rotate {} degrees clockwise', 'turnLeft:': 'Rotate {} degrees counterclockwise', 'heading:': 'Point in direction {}', 'pointTowards:': 'Point Towards {}', 'gotoX:y:': 'Goto X: {} Y: {}', 'gotoSpriteOrMouse:': 'Go to {}', 'glideSecs:toX:y:elapsed:from:': 'Glide {} secs to X: {} Y: {}', 'changeXposBy:': 'Change X by {}', 'xpos:': 'Set X to {}', 'changeYposBy:': 'Change Y by {}', 'ypos:': 'Set Y to {}', 'bounceOffEdge': 'If on edge, bounce', 'setRotationStyle': 'Set rotation style {}', 'xpos': 'X position', 'ypos': 'Y position', 'heading': 'Direction', 'say:duration:elapsed:from:': 'Say {} for {} secs', 'say:': 'Say {}', 'think:duration:elapsed:from:': 'Think {} for {} secs', 'think:': 'Think {}', 'show': 'Show', 'hide': 'Hide', 'lookLike:': 'Switch costume to {}', 'nextCostume': 'Next Costume', 'startScene': 'Switch backdrop to {}', 'changeGraphicEffect:by:': 'Change {} effect by {}', 'setGraphicEffect:to:': 'Set {} effect to {}', 'filterReset': 'Clear Graphic Effects', 'changeSizeBy:': 'Change Size by {}%', 'setSizeTo:': 'Set size to {}%', 'comeToFront': 'Go to front', 'goBackByLayers:': 'Go back {} layers', 'costumeIndex': 'Costume #', 'sceneName': 'Backdrop name', 'scale': 'Size', 'playSound:': 'Play sound {}', 'doPlaySoundAndWait': 'Play sound {} and wait', 'stopAllSounds': 'Stop all sounds', 'playDrum': 'Play drum {} for {} beats', 'rest:elapsed:from:': 'Rest for {} beats', 'noteOn:duration:elapsed:from:': 'Play note {} for {} beats', 'instrument:': 'Set Instrument to {}', 'changeVolumeBy:': 'Change Volume by {}', 'setVolumeTo:': 'Set Volume To {}', 'volume': 'Volume', 'changeTempoBy:': 'Change tempo by {}', 'setTempoTo:': 'Set tempo to {}', 'tempo': 'Tempo', 'stampCostume': 'Stamp', 'putPenDown': 'Pen Down', 'clearPenTrails': 'Clear', 'putPenUp': 'Pen Up', 'penColor:': 'Set pen colour (number) to {}', 'changePenHueBy:': 'Change pen colour by {}', 'setPenHueTo:': 'Set pen colour to {}', 'changePenShadeBy:': 'Change pen shade by {}', 'setPenShadeTo:': 'Set pen shade to {}', 'changePenSizeBy:': 'Change pen size by {}', 'penSize:': 'Set pen size to {}', 'readVariable': 'Variable: {}', 'setVar:to:': 'Set {} to {}', 'changeVar:by:': 'Change {} by {}', 'showVariable:': 'Show Variable {}', 'hideVariable:': 'Hide Variable {}', 'contentsOfList:': 'List: {}', 'append:toList:': 'Add {} to {}', 'deleteLine:ofList:': 'Delete {} of {}', 'insert:at:ofList:': 'Insert {} at {} of {}', 'setLine:ofList:to:': 'Replace Item {} of {} with {}', 'getLine:ofList:': 'Item {} of list {}', 'lineCountOfList:': 'Length of list: {}', 'list:contains:': 'List {} Contains {}', 'showList:': 'Show List {}', 'hideList:': 'Hide List {}', 'getParam': 'Argument: {}'}
+
+def old_scratchBlocks_to_internal_to_english_dict_converter(scratchBlocks):
+    # This name is so long to discourage use in any actual program.
+    # The internal_to_english_dict format is temporary.
+    import re
+    return dict((k, re.sub(r"§.", "{}", v['t']))
+                for k, v in scratchBlocks.items())
+
+def old_scratchBlocks_to_block_parameters_converter(scratchBlocks):
+    # This name is so long to discourage use in any actual program.
+    # The block_parameters format is permanent.
+    # The keys are the internal names.
+    # The values are tuples containing the Scratch internal specifiers
+    #   for types (the ones that are used in the custom blocks).
+    return dict((k, tuple('*' for n in v['s']))
+                for k, v in scratchBlocks.items())
+
+def old_scratchBlocks(internal_to_english_dict, block_parameters):
+    # The old scratchBlocks variable is a dictionary.
+    # Each key corresponds to an internal name.
+    # Each value is another dictionary of this format: {
+    #     't':"English to (§1, §2) for §3 secs",
+    #     's':[1, 2, 3]
+    # }
+    # The internal_to_english_dict that this function takes is a dictionary.
+    # Each key corresponds to an internal name.
+    # Each value is a translated name in Python new-style format syntax.
+    # This format is temporary and only used for this old scratchBlocks
+    class LegacyBlockView:
+        def __init__(self, i2e, block_parameters):
+            self.i2e = i2e
+            self.params = block_parameters
+
+        def __getitem__(self, key):
+            return {
+                't': self.i2e[key].format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
+                's': list(range(1, len(self.params[key]) + 1))
+            }
+
+        def __contains__(self, key):
+            return key in self.i2e
+
+        def __iter__(self):
+            return iter(self.i2e)
+
+    return LegacyBlockView(internal_to_english_dict, block_parameters)
+
+scratchBlocks = old_scratchBlocks(old_block_translations, block_parameters)
 
 #####################
 # Check environment #
@@ -408,6 +443,7 @@ def load():
                                                                         ddt = str(getData(lData[m]))
                                                                     except:
                                                                         ddt = str(lData[m])
+                                                                    # TODO: This is where #21 should be implemented.
                                                                     name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
                                                                     loopData = loopData + 1
                                                                 return name
