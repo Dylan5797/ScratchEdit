@@ -145,24 +145,20 @@ def old_load_settings():
 # scratchBlocks and translation #
 
 old_block_translations = {'procDef': 'Custom Block: {}', 'whenGreenFlag': 'When Green Flag Clicked', 'whenIReceive': 'When I Receive: {}', 'doBroadcastAndWait': 'Broadcast {} and wait', 'broadcast:': 'Broadcast {}', 'whenSensorGreaterThan': 'When {} greater than {}', 'whenKeyPressed': 'When {} key pressed', 'whenClicked': 'When this sprite clicked', 'whenCloned': 'When I start as a clone', 'wait:elapsed:from:': 'Wait {} secs', 'doRepeat': 'Repeat {} Times >', 'doForever': 'Repeat Forever >', 'doIf': 'If {} >', 'doIfElse': 'If {} Else >', 'doWaitUntil': 'Wait Until {}', 'doUntil': 'Repeat Until {}>', 'stopScripts': 'Stop {}', 'createCloneOf': 'Create clone of {}', 'deleteClone': 'Delete this clone', 'touching:': 'Touching {}', 'touchingColor:': 'Touching color (int) {}', 'distanceTo:': 'Distance to {}', 'color:sees:': 'Colorid {} is touching colorid {}', 'doAsk': 'Ask {}', 'answer': 'Answer', 'keyPressed:': 'Key {} pressed?', 'mousePressed': 'Mouse Down?', 'mouseX': 'Mouse X', 'mouseY': 'Mouse Y', 'soundLevel': 'Loudness', 'senseVideoMotion': 'Video {} on {}', 'setVideoState': 'Turn video [{}]', 'setVideoTransparency': 'Set Video Transparency To {}%', 'timer': 'Timer', 'timerReset': 'Reset Timer', 'getAttribute:of:': '{} of {}', 'timeAndDate': 'Current {}', 'timestamp': 'Days since 2000', 'getUserName': 'Username', '+': '{} + {}', '-': '{} - {}', '*': '{} * {}', '/': '{} / {}', 'randomFrom:to:': 'Pick random from {} to {}', '>': '{} > {}', '<': '{} < {}', '=': '{} = {}', '&': '{} and {}', '|': '{} or {}', 'not': 'Not {}', 'concatenate:with:': 'Join {} {}', 'letter:of:': 'Letter {} of {}', 'stringLength:': 'Length of {}', '%': '{} mod {}', 'rounded': 'Round {}', 'computeFunction:of:': '{} of {}', 'call': '{}', 'forward:': 'Move {} steps', 'turnRight:': 'Rotate {} degrees clockwise', 'turnLeft:': 'Rotate {} degrees counterclockwise', 'heading:': 'Point in direction {}', 'pointTowards:': 'Point Towards {}', 'gotoX:y:': 'Goto X: {} Y: {}', 'gotoSpriteOrMouse:': 'Go to {}', 'glideSecs:toX:y:elapsed:from:': 'Glide {} secs to X: {} Y: {}', 'changeXposBy:': 'Change X by {}', 'xpos:': 'Set X to {}', 'changeYposBy:': 'Change Y by {}', 'ypos:': 'Set Y to {}', 'bounceOffEdge': 'If on edge, bounce', 'setRotationStyle': 'Set rotation style {}', 'xpos': 'X position', 'ypos': 'Y position', 'heading': 'Direction', 'say:duration:elapsed:from:': 'Say {} for {} secs', 'say:': 'Say {}', 'think:duration:elapsed:from:': 'Think {} for {} secs', 'think:': 'Think {}', 'show': 'Show', 'hide': 'Hide', 'lookLike:': 'Switch costume to {}', 'nextCostume': 'Next Costume', 'startScene': 'Switch backdrop to {}', 'changeGraphicEffect:by:': 'Change {} effect by {}', 'setGraphicEffect:to:': 'Set {} effect to {}', 'filterReset': 'Clear Graphic Effects', 'changeSizeBy:': 'Change Size by {}%', 'setSizeTo:': 'Set size to {}%', 'comeToFront': 'Go to front', 'goBackByLayers:': 'Go back {} layers', 'costumeIndex': 'Costume #', 'sceneName': 'Backdrop name', 'scale': 'Size', 'playSound:': 'Play sound {}', 'doPlaySoundAndWait': 'Play sound {} and wait', 'stopAllSounds': 'Stop all sounds', 'playDrum': 'Play drum {} for {} beats', 'rest:elapsed:from:': 'Rest for {} beats', 'noteOn:duration:elapsed:from:': 'Play note {} for {} beats', 'instrument:': 'Set Instrument to {}', 'changeVolumeBy:': 'Change Volume by {}', 'setVolumeTo:': 'Set Volume To {}', 'volume': 'Volume', 'changeTempoBy:': 'Change tempo by {}', 'setTempoTo:': 'Set tempo to {}', 'tempo': 'Tempo', 'stampCostume': 'Stamp', 'putPenDown': 'Pen Down', 'clearPenTrails': 'Clear', 'putPenUp': 'Pen Up', 'penColor:': 'Set pen colour (number) to {}', 'changePenHueBy:': 'Change pen colour by {}', 'setPenHueTo:': 'Set pen colour to {}', 'changePenShadeBy:': 'Change pen shade by {}', 'setPenShadeTo:': 'Set pen shade to {}', 'changePenSizeBy:': 'Change pen size by {}', 'penSize:': 'Set pen size to {}', 'readVariable': 'Variable: {}', 'setVar:to:': 'Set {} to {}', 'changeVar:by:': 'Change {} by {}', 'showVariable:': 'Show Variable {}', 'hideVariable:': 'Hide Variable {}', 'contentsOfList:': 'List: {}', 'append:toList:': 'Add {} to {}', 'deleteLine:ofList:': 'Delete {} of {}', 'insert:at:ofList:': 'Insert {} at {} of {}', 'setLine:ofList:to:': 'Replace Item {} of {} with {}', 'getLine:ofList:': 'Item {} of list {}', 'lineCountOfList:': 'Length of list: {}', 'list:contains:': 'List {} Contains {}', 'showList:': 'Show List {}', 'hideList:': 'Hide List {}', 'getParam': 'Argument: {}'}
+old_ui_translations = {}
 
-def old_scratchBlocks_to_internal_to_english_dict_converter(scratchBlocks):
-    # This name is so long to discourage use in any actual program.
-    # The internal_to_english_dict format is temporary.
-    import re
-    return dict((k, re.sub(r"§.", "{}", v['t']))
-                for k, v in scratchBlocks.items())
+import functools
+@functools.lru_cache(None)
+def _(s, tables = (old_block_translations, old_ui_translations)):
+    for table in tables:
+        try:
+            return table[s]
+        except KeyError:
+            continue
+    log.add("Failed to translate {!r}".format(s))
+    return s
 
-def old_scratchBlocks_to_block_parameters_converter(scratchBlocks):
-    # This name is so long to discourage use in any actual program.
-    # The block_parameters format is permanent.
-    # The keys are the internal names.
-    # The values are tuples containing the Scratch internal specifiers
-    #   for types (the ones that are used in the custom blocks).
-    return dict((k, tuple('*' for n in v['s']))
-                for k, v in scratchBlocks.items())
-
-def old_scratchBlocks(internal_to_english_dict, block_parameters):
+def old_scratchBlocks(block_parameters):
     # The old scratchBlocks variable is a dictionary.
     # Each key corresponds to an internal name.
     # Each value is another dictionary of this format: {
@@ -174,25 +170,24 @@ def old_scratchBlocks(internal_to_english_dict, block_parameters):
     # Each value is a translated name in Python new-style format syntax.
     # This format is temporary and only used for this old scratchBlocks
     class LegacyBlockView:
-        def __init__(self, i2e, block_parameters):
-            self.i2e = i2e
+        def __init__(self, block_parameters):
             self.params = block_parameters
 
         def __getitem__(self, key):
             return {
-                't': self.i2e[key].format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
+                't': _(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
                 's': list(range(1, len(self.params[key]) + 1))
             }
 
         def __contains__(self, key):
-            return key in self.i2e
+            return key in self.params
 
         def __iter__(self):
-            return iter(self.i2e)
+            return iter(self.params)
 
-    return LegacyBlockView(internal_to_english_dict, block_parameters)
+    return LegacyBlockView(block_parameters)
 
-scratchBlocks = old_scratchBlocks(old_block_translations, block_parameters)
+scratchBlocks = old_scratchBlocks(block_parameters)
 
 #####################
 # Check environment #
