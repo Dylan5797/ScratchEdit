@@ -74,7 +74,7 @@ Text Colour = Black
 # ''' + UI_("This won't slow down ScratchEdit. It may take a little while to check though.") + '''
 Check For Update at Startup = True
 # ''' + UI_("You will have massive lag when viewing large Scratch Projects if this is set to true.") + '''
-Update JSON Window Every Edit = False''')
+Update JSON Window Every Edit = False'''))
 
 def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
                            'ScratchEdit/current-update/latestupdate.txt',
@@ -96,7 +96,7 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
         t.withdraw()
         if db.askyesno(UI_('ScratchEdit Update'),
                        UI_('A Newer version of ScratchEdit is available: {}\n'
-                           'Do you want to install it?'.format(r), master = t):
+                           'Do you want to install it?').format(r), master = t):
             f = urllib.request.urlopen('https://raw.githubusercontent.com/'
                                        'Dylan5797/ScratchEdit/master/'
                                        'ScratchEdit.pyw').read()
@@ -108,11 +108,62 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
     threading.Thread(target=run_in_thread,
                      args=(url, version)).start()
 
+class Log():
+    def __init__(self, text = 'ScratchEdit {}'.format(version),
+                 base_path = r'C:\ProgramData\ScratchEdit'):
+        self.time = self.timestamp()
+        self.name = os.path.join(base_path, '.logging', self.time + '.txt')
+        with open(self.name, 'w') as a:
+            a.write(text + ' --' + self.timestamp(False) + '\n')
+    
+    def add(self, value, header='INFO', raw=False, c=True):
+        with open(self.name, 'a') as f:
+            if raw:
+                f.write(str(value))
+            else:
+                if c:
+                    f.write("{} [{}]: {}\n".format(self.timestamp(False),
+                                                   header, value))
+                else:
+                    f.write("\n{} [{}]: {}\n".format(self.timestamp(False),
+                                                     header, value))
+
+    @staticmethod
+    def get_current_time(file_safe = True):
+        if file_safe:
+            return time.strftime('[%H.%M.%S]')
+        else:
+            return time.strftime('[%H:%M:%S]')
+    
+    @staticmethod
+    def get_current_date(file_safe = True):
+        if file_safe:
+            return time.strftime('[%y-%m-%d]')
+        else:
+            return time.strftime('[%y/%m/%d]')
+
+    @staticmethod
+    def timestamp(file_safe = True):
+        if file_safe:
+            return time.strftime('[%y-%m-%d %H.%M.%S]')
+        else:
+            return time.strftime('[%y/%m/%d %H:%M:%S]')
+
+global log
+log = Log()
+
+#########
+# Setup #
+#########
+
+settings = configparser.ConfigParser()
+settings.read(r"C:\ProgramData\ScratchEdit\ScratchEdit.ini")
+
 ########## These exist solely to cushion the blow
 # Legacy # of having a full refactor all at once.
 ########## Remove them once they're no longer used.
 
-def old_load_settings():
+def old_load_settings(settings):
     """This function is deprecated. We're trying to migrate away from it."""
     BOOLS = ("show", "check", "update")
     INTS = ("size")
@@ -124,9 +175,9 @@ def old_load_settings():
             self.config = config
 
         def __getitem__(self, key):
-            for section_name in config.sections():
-                if key in config[section_name]:
-                    section = config[section_name]
+            for section_name in self.config.sections():
+                if key in self.config[section_name]:
+                    section = self.config[section_name]
                     break
             else:
                 raise KeyError(key)
@@ -138,9 +189,7 @@ def old_load_settings():
                 return section.getint(key)
             return section[key]
     
-    config = configparser.ConfigParser()
-    config.read(r"C:\ProgramData\ScratchEdit\ScratchEdit.ini")
-    return LegacyMapView(config)
+    return LegacyMapView(settings)
 
 # scratchBlocks and translation #
 
@@ -270,48 +319,7 @@ create_data_files()
 
 time.sleep(0.01)  # TODO: What is this for?!
 
-sets = old_load_settings()
-
-class Log():
-    def __init__(self, text = 'ScratchEdit {}'.format(version),
-                 base_path = r'C:\ProgramData\ScratchEdit'):
-        self.time = self.timestamp()
-        self.name = os.path.join(base_path, '.logging', self.time + '.txt')
-        with open(self.name, 'w') as a:
-            a.write(text + ' --' + self.timestamp(False) + '\n')
-    
-    def add(self, value, header='INFO', raw=False, c=True):
-        with open(self.name, 'a') as f:
-            if raw:
-                f.write(str(value))
-            else:
-                if c:
-                    f.write("{} [{}]: {}\n".format(self.timestamp(False),
-                                                   header, value))
-                else:
-                    f.write("\n{} [{}]: {}\n".format(self.timestamp(False),
-                                                     header, value))
-
-    @staticmethod
-    def get_current_time(file_safe = True):
-        if file_safe:
-            return time.strftime('[%H.%M.%S]')
-        else:
-            return time.strftime('[%H:%M:%S]')
-    
-    @staticmethod
-    def get_current_date(file_safe = True):
-        if file_safe:
-            return time.strftime('[%y-%m-%d]')
-        else:
-            return time.strftime('[%y/%m/%d]')
-
-    @staticmethod
-    def timestamp(file_safe = True):
-        if file_safe:
-            return time.strftime('[%y-%m-%d %H.%M.%S]')
-        else:
-            return time.strftime('[%y/%m/%d %H:%M:%S]')
+sets = old_load_settings(settings)
 
 import tkinter.messagebox as db
 import tkinter.filedialog
@@ -321,8 +329,6 @@ if sets["Check For Update at Startup"]:
 tk = Tk()
 tk.focus()
 tk.title(UI_('ScratchEdit'))
-global log
-log = Log()
 log.add('Successfully imported all modules')
 def forcekill(e=None):
     log.add('Under forcekill() call. Destroying {"EditorWindow":"edw", "ValueEditor":"ky", "HelpScreen":"helps", "MainScratchEditWindow":"tk"}')
