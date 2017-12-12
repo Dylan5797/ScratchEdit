@@ -399,7 +399,9 @@ def load():
                             pass
                 except:
                     pass
+                # TODO: What does isdict do?
                 if isdict:
+                    # TODO: Why is there then a check for list or dict?
                     if isinstance(ls, list) or isinstance(ls, dict):
                         try:
                             lb.delete(0, END)
@@ -412,144 +414,133 @@ def load():
                             lp = 0
                             FONTSIZE = 18
                             for x in ls:
-                                # TODO: Reduce nesting.
-                                try:
-                                    if not sets["SHOW SCRIPT FORMATTING"]:
-                                        raise TypeError()
-                                    lb.insert(END, 'Sprite: ' + str(x['objName']))
-                                    t = 'objName'
-                                except:
+                                # TODO: Fix quick-and-dirty patch.
+                                quick_and_dirty = False
+                                if isinstance(x, dict):
+                                    if settings["Graphics"].getboolean("Show Script Formatting"):
+                                        for _u, _t in ((UI_('Sprite: {}'), 'objName'),
+                                                       (UI_('List: {}'), 'listName'),
+                                                       (UI_('Variable: {}'), 'label'),
+                                                       (UI_('Sound: {}'), 'soundName'),
+                                                       (UI_('Costume: {}'), 'costumeName')):
+                                            if _t in x:
+                                                lb.insert(END, _u.format(x[_t]))
+                                                t = _t
+                                                break
+                                        else:
+                                            quick_and_dirty = True
+                                    else:
+                                        quick_and_dirty = True
+                                else:
+                                    quick_and_dirty = True
+                                if quick_and_dirty:
                                     try:
-                                        if not sets["SHOW SCRIPT FORMATTING"]:
-                                            raise TypeError()
-                                        lb.insert(END, 'List: ' + str(x['listName']))
-                                        t = 'listName'
-                                    except:
-                                        try:
-                                            if not sets["SHOW SCRIPT FORMATTING"]:
-                                                raise TypeError()
-                                            lb.insert(END, 'Variable: ' + str(x['label']))
-                                            t = 'label'
-                                        except:
+                                        def getData(lData):
                                             try:
-                                                if not sets["SHOW SCRIPT FORMATTING"]:
-                                                    raise TypeError()
-                                                lb.insert(END, 'Sound: ' + str(x['soundName']))
-                                                t = 'soundName'
-                                            except:
-                                                try:
-                                                    if not sets["SHOW SCRIPT FORMATTING"]:
-                                                        raise TypeError()
-                                                    lb.insert(END, 'Costume: ' + str(x['costumeName']))
-                                                    t = 'costumeName'
-                                                except:
+                                                formatting = scratchBlocks[lData[0]]['s']
+                                                name = scratchBlocks[lData[0]]['t']
+                                                loopData = 0
+                                                for m in formatting:
                                                     try:
-                                                        def getData(lData):
-                                                            try:
-                                                                formatting = scratchBlocks[lData[0]]['s']
-                                                                name = scratchBlocks[lData[0]]['t']
-                                                                loopData = 0
-                                                                for m in formatting:
-                                                                    try:
-                                                                        ddt = str(getData(lData[m]))
-                                                                    except:
-                                                                        ddt = str(lData[m])
-                                                                    # TODO: This is where #21 should be implemented.
-                                                                    name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
-                                                                    loopData = loopData + 1
-                                                                return name
-                                                            except:
-                                                                raise RuntimeError()
-                                                        if not sets['SHOW SCRIPT FORMATTING']:
-                                                            raise TypeError()
-                                                        nextTest = False
-                                                        lastTest = False
-                                                        isScratchItem = False
-                                                        ##Do NOT think the tests are in the wrong order (you will see the way this works if you view IF blocks or REPEAT blocks :P)
-                                                        try:
-                                                            if x[0] in scratchBlocks:
-                                                                isScratchItem = True
-                                                                dataItem = x
-                                                            else:
-                                                                nextTest = True
-                                                        except:
-                                                            nextTest = True
-                                                        if nextTest:
-                                                            try:
-                                                                a = x[0][0]
-                                                                if a in scratchBlocks:
-                                                                    isScratchItem = True
-                                                                    dataItem = x[0]
-                                                                
-                                                                else:
-                                                                    lastTest = True
-                                                            except:
-                                                                lastTest = True
-                                                        if lastTest:
-                                                            try:
-                                                                if x[2][0][0] in scratchBlocks:
-                                                                    isScratchItem = True
-                                                                    dataItem = x[2][0]
-                                                                else:
-                                                                    raise TypeError()
-                                                            except:
-                                                                raise TypeError()
-                                                        if isScratchItem:
-                                                            lb.insert(END, getData(dataItem))
-                                                            
-                                                        else:
-                                                            raise TypeError()
+                                                        ddt = str(getData(lData[m]))
                                                     except:
-                                                        if str(x) == 'objName':
-                                                            lb.insert(END, 'Object Name')
-                                                        elif str(x) == 'children':
-                                                            lb.insert(END, 'Sprites')
-                                                        elif str(x) == 'currentCostumeIndex':
-                                                            lb.insert(END, 'Costume #')
-                                                        elif str(x) == 'videoAlpha':
-                                                            lb.insert(END, 'Video Transparency')
-                                                        elif str(x) == 'tempoBPM':
-                                                            lb.insert(END, 'Tempo')
-                                                        elif str(x) == 'info':
-                                                            lb.insert(END, 'Project Info')
-                                                        elif str(x) == 'rotationStyle':
-                                                            lb.insert(END, 'Rotation Style')
-                                                        elif str(x) == 'scratchX':
-                                                            lb.insert(END, 'X Position')
-                                                        elif str(x) == 'scratchY':
-                                                            lb.insert(END, 'Y Position')
-                                                        elif str(x) == 'spriteInfo':
-                                                            lb.insert(END, 'Sprite Info')
-                                                        elif str(x) == 'isDraggable':
-                                                            lb.insert(END, 'Is Draggable?')
-                                                        elif str(x) == 'scale':
-                                                            lb.insert(END, 'Size')
-                                                        elif str(x) == 'penLayerMD5':
-                                                            lb.insert(END, 'Pen Layer Image')
-                                                        elif str(x) == 'indexInLibrary':
-                                                            lb.insert(END, 'Image ID')
-                                                        elif str(x) == 'penLayerID':
-                                                            lb.insert(END, 'Pen Layer ID')
-                                                        elif str(x) in scratchBlocks:
-                                                            formatting = scratchBlocks[x]['s']
-                                                            name = scratchBlocks[x]['t']
-                                                            loopData = 0
-                                                            for m in formatting:
-                                                                try:
-                                                                    ddt = str(getData(ls[m]))
-                                                                except:
-                                                                    ddt = str(ls[m])
-                                                                name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
-                                                                loopData = loopData + 1
-                                                            lb.insert(END, name)
-                                                        else:
-                                                            try:
-                                                                lb.insert(END, x['name'])
-                                                            except:
-                                                                if str(x) == '':
-                                                                    lb.insert(END, '(Blank string)')
-                                                                else:
-                                                                    lb.insert(END, str(x))
+                                                        ddt = str(lData[m])
+                                                    # TODO: This is where #21 should be implemented.
+                                                    name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
+                                                    loopData = loopData + 1
+                                                return name
+                                            except:
+                                                raise RuntimeError()
+                                        if not sets['SHOW SCRIPT FORMATTING']:
+                                            raise TypeError()
+                                        nextTest = False
+                                        lastTest = False
+                                        isScratchItem = False
+                                        ##Do NOT think the tests are in the wrong order (you will see the way this works if you view IF blocks or REPEAT blocks :P)
+                                        try:
+                                            if x[0] in scratchBlocks:
+                                                isScratchItem = True
+                                                dataItem = x
+                                            else:
+                                                nextTest = True
+                                        except:
+                                            nextTest = True
+                                        if nextTest:
+                                            try:
+                                                a = x[0][0]
+                                                if a in scratchBlocks:
+                                                    isScratchItem = True
+                                                    dataItem = x[0]
+                                                
+                                                else:
+                                                    lastTest = True
+                                            except:
+                                                lastTest = True
+                                        if lastTest:
+                                            try:
+                                                if x[2][0][0] in scratchBlocks:
+                                                    isScratchItem = True
+                                                    dataItem = x[2][0]
+                                                else:
+                                                    raise TypeError()
+                                            except:
+                                                raise TypeError()
+                                        if isScratchItem:
+                                            lb.insert(END, getData(dataItem))
+                                            
+                                        else:
+                                            raise TypeError()
+                                    except:
+                                        if str(x) == 'objName':
+                                            lb.insert(END, 'Object Name')
+                                        elif str(x) == 'children':
+                                            lb.insert(END, 'Sprites')
+                                        elif str(x) == 'currentCostumeIndex':
+                                            lb.insert(END, 'Costume #')
+                                        elif str(x) == 'videoAlpha':
+                                            lb.insert(END, 'Video Transparency')
+                                        elif str(x) == 'tempoBPM':
+                                            lb.insert(END, 'Tempo')
+                                        elif str(x) == 'info':
+                                            lb.insert(END, 'Project Info')
+                                        elif str(x) == 'rotationStyle':
+                                            lb.insert(END, 'Rotation Style')
+                                        elif str(x) == 'scratchX':
+                                            lb.insert(END, 'X Position')
+                                        elif str(x) == 'scratchY':
+                                            lb.insert(END, 'Y Position')
+                                        elif str(x) == 'spriteInfo':
+                                            lb.insert(END, 'Sprite Info')
+                                        elif str(x) == 'isDraggable':
+                                            lb.insert(END, 'Is Draggable?')
+                                        elif str(x) == 'scale':
+                                            lb.insert(END, 'Size')
+                                        elif str(x) == 'penLayerMD5':
+                                            lb.insert(END, 'Pen Layer Image')
+                                        elif str(x) == 'indexInLibrary':
+                                            lb.insert(END, 'Image ID')
+                                        elif str(x) == 'penLayerID':
+                                            lb.insert(END, 'Pen Layer ID')
+                                        elif str(x) in scratchBlocks:
+                                            formatting = scratchBlocks[x]['s']
+                                            name = scratchBlocks[x]['t']
+                                            loopData = 0
+                                            for m in formatting:
+                                                try:
+                                                    ddt = str(getData(ls[m]))
+                                                except:
+                                                    ddt = str(ls[m])
+                                                name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
+                                                loopData = loopData + 1
+                                            lb.insert(END, name)
+                                        else:
+                                            try:
+                                                lb.insert(END, x['name'])
+                                            except:
+                                                if str(x) == '':
+                                                    lb.insert(END, '(Blank string)')
+                                                else:
+                                                    lb.insert(END, str(x))
                                 if isinstance(ls, list):
                                     lst.append(lp)
                                 else:
