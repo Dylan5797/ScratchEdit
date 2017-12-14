@@ -408,10 +408,6 @@ def load():
                             global lst
                             lst = list()
                             lp = 0
-                            for x in lst:
-                                del lst[lp]
-                                lp = lp + 1
-                            lp = 0
                             FONTSIZE = 18
                             for x in ls:
                                 # TODO: Fix quick-and-dirty patch.
