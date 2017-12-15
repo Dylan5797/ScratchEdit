@@ -231,7 +231,7 @@ def old_scratchBlocks(block_parameters):
 
         def __getitem__(self, key):
             return {
-                't': SB_(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
+                't': "LEGACY: " + SB_(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
                 's': list(range(1, len(self.params[key]) + 1))
             }
 
@@ -441,7 +441,7 @@ def load():
                                                         ddt = str(getData(lData[m]))
                                                     except:
                                                         ddt = str(lData[m])
-                                                    # TODO: This is where #21 should be implemented.
+                                                    # This function should be scrapped whenever possible.
                                                     name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
                                                     loopData = loopData + 1
                                                 return name
@@ -517,17 +517,10 @@ def load():
                                             lb.insert(END, 'Image ID')
                                         elif str(x) == 'penLayerID':
                                             lb.insert(END, 'Pen Layer ID')
-                                        elif str(x) in scratchBlocks:
-                                            formatting = scratchBlocks[x]['s']
-                                            name = scratchBlocks[x]['t']
-                                            loopData = 0
-                                            for m in formatting:
-                                                try:
-                                                    ddt = str(getData(ls[m]))
-                                                except:
-                                                    ddt = str(ls[m])
-                                                name = name.replace('§' + str(loopData + 1), '[' + ddt + ']')
-                                                loopData = loopData + 1
+                                        elif str(x) in block_parameters:
+                                            # TODO: Move into function
+                                            param_count = len(block_parameters[x])
+                                            name = SB_(x).format(*(ls[m] for m in range(1, param_count + 1)))
                                             lb.insert(END, name)
                                         else:
                                             try:
