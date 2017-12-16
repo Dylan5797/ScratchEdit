@@ -3,8 +3,77 @@
 global scratchBlocks
 global version
 version = '4.0.0-beta'
-block_parameters = {'procDef': ('*',), 'whenGreenFlag': (), 'whenIReceive': ('*',), 'doBroadcastAndWait': ('*',), 'broadcast:': ('*',), 'whenSensorGreaterThan': ('*', '*'), 'whenKeyPressed': ('*',), 'whenClicked': (), 'whenCloned': (), 'wait:elapsed:from:': ('*',), 'doRepeat': ('*',), 'doForever': (), 'doIf': ('*',), 'doIfElse': ('*',), 'doWaitUntil': ('*',), 'doUntil': ('*',), 'stopScripts': ('*',), 'createCloneOf': ('*',), 'deleteClone': (), 'touching:': ('*',), 'touchingColor:': ('*',), 'distanceTo:': ('*',), 'color:sees:': ('*', '*'), 'doAsk': ('*',), 'answer': (), 'keyPressed:': ('*',), 'mousePressed': (), 'mouseX': (), 'mouseY': (), 'soundLevel': (), 'senseVideoMotion': ('*', '*'), 'setVideoState': ('*',), 'setVideoTransparency': ('*',), 'timer': (), 'timerReset': (), 'getAttribute:of:': ('*', '*'), 'timeAndDate': ('*',), 'timestamp': (), 'getUserName': (), '+': ('*', '*'), '-': ('*', '*'), '*': ('*', '*'), '/': ('*', '*'), 'randomFrom:to:': ('*', '*'), '>': ('*', '*'), '<': ('*', '*'), '=': ('*', '*'), '&': ('*', '*'), '|': ('*', '*'), 'not': ('*',), 'concatenate:with:': ('*', '*'), 'letter:of:': ('*', '*'), 'stringLength:': ('*',), '%': ('*', '*'), 'rounded': ('*',), 'computeFunction:of:': ('*', '*'), 'call': ('*',), 'forward:': ('*',), 'turnRight:': ('*',), 'turnLeft:': ('*',), 'heading:': ('*',), 'pointTowards:': ('*',), 'gotoX:y:': ('*', '*'), 'gotoSpriteOrMouse:': ('*',), 'glideSecs:toX:y:elapsed:from:': ('*', '*', '*'), 'changeXposBy:': ('*',), 'xpos:': ('*',), 'changeYposBy:': ('*',), 'ypos:': ('*',), 'bounceOffEdge': (), 'setRotationStyle': ('*',), 'xpos': (), 'ypos': (), 'heading': (), 'say:duration:elapsed:from:': ('*', '*'), 'say:': ('*',), 'think:duration:elapsed:from:': ('*', '*'), 'think:': ('*',), 'show': (), 'hide': (), 'lookLike:': ('*',), 'nextCostume': (), 'startScene': ('*',), 'changeGraphicEffect:by:': ('*', '*'), 'setGraphicEffect:to:': ('*', '*'), 'filterReset': (), 'changeSizeBy:': ('*',), 'setSizeTo:': ('*',), 'comeToFront': (), 'goBackByLayers:': ('*',), 'costumeIndex': (), 'sceneName': (), 'scale': (), 'playSound:': ('*',), 'doPlaySoundAndWait': ('*',), 'stopAllSounds': (), 'playDrum': ('*', '*'), 'rest:elapsed:from:': ('*',), 'noteOn:duration:elapsed:from:': ('*', '*'), 'instrument:': ('*',), 'changeVolumeBy:': ('*',), 'setVolumeTo:': ('*',), 'volume': (), 'changeTempoBy:': ('*',), 'setTempoTo:': ('*',), 'tempo': (), 'stampCostume': (), 'putPenDown': (), 'clearPenTrails': (), 'putPenUp': (), 'penColor:': ('*',), 'changePenHueBy:': ('*',), 'setPenHueTo:': ('*',), 'changePenShadeBy:': ('*',), 'setPenShadeTo:': ('*',), 'changePenSizeBy:': ('*',), 'penSize:': ('*',), 'readVariable': ('*',), 'setVar:to:': ('*', '*'), 'changeVar:by:': ('*', '*'), 'showVariable:': ('*',), 'hideVariable:': ('*',), 'contentsOfList:': ('*',), 'append:toList:': ('*', '*'), 'deleteLine:ofList:': ('*', '*'), 'insert:at:ofList:': ('*', '*', '*'), 'setLine:ofList:to:': ('*', '*', '*'), 'getLine:ofList:': ('*', '*'), 'lineCountOfList:': ('*',), 'list:contains:': ('*', '*'), 'showList:': ('*',), 'hideList:': ('*',), 'getParam': ('*',)}
-
+block_parameters = {'procDef': ('*',), 'whenGreenFlag': (),
+                    'whenIReceive': ('*',), 'doBroadcastAndWait': ('*',),
+                    'broadcast:': ('*',), 'whenSensorGreaterThan': ('*', '*'),
+                    'whenKeyPressed': ('*',), 'whenClicked': (),
+                    'whenCloned': (), 'wait:elapsed:from:': ('*',),
+                    'doRepeat': ('*',), 'doForever': (), 'doIf': ('*',),
+                    'doIfElse': ('*',), 'doWaitUntil': ('*',),
+                    'doUntil': ('*',), 'stopScripts': ('*',),
+                    'createCloneOf': ('*',), 'deleteClone': (),
+                    'touching:': ('*',), 'touchingColor:': ('*',),
+                    'distanceTo:': ('*',), 'color:sees:': ('*', '*'),
+                    'doAsk': ('*',), 'answer': (), 'keyPressed:': ('*',),
+                    'mousePressed': (), 'mouseX': (), 'mouseY': (),
+                    'soundLevel': (), 'senseVideoMotion': ('*', '*'),
+                    'setVideoState': ('*',), 'setVideoTransparency': ('*',),
+                    'timer': (), 'timerReset': (),
+                    'getAttribute:of:': ('*', '*'), 'timeAndDate': ('*',),
+                    'timestamp': (), 'getUserName': (), '+': ('*', '*'),
+                    '-': ('*', '*'), '*': ('*', '*'), '/': ('*', '*'),
+                    'randomFrom:to:': ('*', '*'), '>': ('*', '*'),
+                    '<': ('*', '*'), '=': ('*', '*'), '&': ('*', '*'),
+                    '|': ('*', '*'), 'not': ('*',),
+                    'concatenate:with:': ('*', '*'), 'letter:of:': ('*', '*'),
+                    'stringLength:': ('*',), '%': ('*', '*'),
+                    'rounded': ('*',), 'computeFunction:of:': ('*', '*'),
+                    'call': ('*',), 'forward:': ('*',), 'turnRight:': ('*',),
+                    'turnLeft:': ('*',), 'heading:': ('*',),
+                    'pointTowards:': ('*',), 'gotoX:y:': ('*', '*'),
+                    'gotoSpriteOrMouse:': ('*',),
+                    'glideSecs:toX:y:elapsed:from:': ('*', '*', '*'),
+                    'changeXposBy:': ('*',), 'xpos:': ('*',),
+                    'changeYposBy:': ('*',), 'ypos:': ('*',),
+                    'bounceOffEdge': (), 'setRotationStyle': ('*',),
+                    'xpos': (), 'ypos': (), 'heading': (),
+                    'say:duration:elapsed:from:': ('*', '*'),
+                    'say:': ('*',), 'think:duration:elapsed:from:': ('*', '*'),
+                    'think:': ('*',), 'show': (), 'hide': (),
+                    'lookLike:': ('*',), 'nextCostume': (),
+                    'startScene': ('*',),
+                    'changeGraphicEffect:by:': ('*', '*'),
+                    'setGraphicEffect:to:': ('*', '*'), 'filterReset': (),
+                    'changeSizeBy:': ('*',), 'setSizeTo:': ('*',),
+                    'comeToFront': (), 'goBackByLayers:': ('*',),
+                    'costumeIndex': (), 'sceneName': (), 'scale': (),
+                    'playSound:': ('*',), 'doPlaySoundAndWait': ('*',),
+                    'stopAllSounds': (), 'playDrum': ('*', '*'),
+                    'rest:elapsed:from:': ('*',),
+                    'noteOn:duration:elapsed:from:': ('*', '*'),
+                    'instrument:': ('*',), 'changeVolumeBy:': ('*',),
+                    'setVolumeTo:': ('*',), 'volume': (),
+                    'changeTempoBy:': ('*',), 'setTempoTo:': ('*',),
+                    'tempo': (), 'stampCostume': (), 'putPenDown': (),
+                    'clearPenTrails': (), 'putPenUp': (), 'penColor:': ('*',),
+                    'changePenHueBy:': ('*',), 'setPenHueTo:': ('*',),
+                    'changePenShadeBy:': ('*',), 'setPenShadeTo:': ('*',),
+                    'changePenSizeBy:': ('*',), 'penSize:': ('*',),
+                    'readVariable': ('*',), 'setVar:to:': ('*', '*'),
+                    'changeVar:by:': ('*', '*'), 'showVariable:': ('*',),
+                    'hideVariable:': ('*',), 'contentsOfList:': ('*',),
+                    'append:toList:': ('*', '*'),
+                    'deleteLine:ofList:': ('*', '*'),
+                    'insert:at:ofList:': ('*', '*', '*'),
+                    'setLine:ofList:to:': ('*', '*', '*'),
+                    'getLine:ofList:': ('*', '*'), 'lineCountOfList:': ('*',),
+                    'list:contains:': ('*', '*'), 'showList:': ('*',),
+                    'hideList:': ('*',), 'getParam': ('*',)
+}
+sprite_attributes = ('objName', 'children', 'currentCostumeIndex',
+                     'videoAlpha', 'tempoBPM', 'info', 'rotationStyle',
+                     'scratchX', 'scratchY', 'spriteInfo', 'isDraggable',
+                     'scale', 'penLayerMD5', 'indexInLibrary', 'penLayerID')
 global FILE_LOADED
 FILE_LOADED = False
 import sys
@@ -193,17 +262,37 @@ def old_load_settings(settings):
 
 # scratchBlocks and translation #
 
-old_block_translations = {'procDef': 'Custom Block: {}', 'whenGreenFlag': 'When Green Flag Clicked', 'whenIReceive': 'When I Receive: {}', 'doBroadcastAndWait': 'Broadcast {} and wait', 'broadcast:': 'Broadcast {}', 'whenSensorGreaterThan': 'When {} greater than {}', 'whenKeyPressed': 'When {} key pressed', 'whenClicked': 'When this sprite clicked', 'whenCloned': 'When I start as a clone', 'wait:elapsed:from:': 'Wait {} secs', 'doRepeat': 'Repeat {} Times >', 'doForever': 'Repeat Forever >', 'doIf': 'If {} >', 'doIfElse': 'If {} Else >', 'doWaitUntil': 'Wait Until {}', 'doUntil': 'Repeat Until {}>', 'stopScripts': 'Stop {}', 'createCloneOf': 'Create clone of {}', 'deleteClone': 'Delete this clone', 'touching:': 'Touching {}', 'touchingColor:': 'Touching color (int) {}', 'distanceTo:': 'Distance to {}', 'color:sees:': 'Colorid {} is touching colorid {}', 'doAsk': 'Ask {}', 'answer': 'Answer', 'keyPressed:': 'Key {} pressed?', 'mousePressed': 'Mouse Down?', 'mouseX': 'Mouse X', 'mouseY': 'Mouse Y', 'soundLevel': 'Loudness', 'senseVideoMotion': 'Video {} on {}', 'setVideoState': 'Turn video [{}]', 'setVideoTransparency': 'Set Video Transparency To {}%', 'timer': 'Timer', 'timerReset': 'Reset Timer', 'getAttribute:of:': '{} of {}', 'timeAndDate': 'Current {}', 'timestamp': 'Days since 2000', 'getUserName': 'Username', '+': '{} + {}', '-': '{} - {}', '*': '{} * {}', '/': '{} / {}', 'randomFrom:to:': 'Pick random from {} to {}', '>': '{} > {}', '<': '{} < {}', '=': '{} = {}', '&': '{} and {}', '|': '{} or {}', 'not': 'Not {}', 'concatenate:with:': 'Join {} {}', 'letter:of:': 'Letter {} of {}', 'stringLength:': 'Length of {}', '%': '{} mod {}', 'rounded': 'Round {}', 'computeFunction:of:': '{} of {}', 'call': '{}', 'forward:': 'Move {} steps', 'turnRight:': 'Rotate {} degrees clockwise', 'turnLeft:': 'Rotate {} degrees counterclockwise', 'heading:': 'Point in direction {}', 'pointTowards:': 'Point Towards {}', 'gotoX:y:': 'Goto X: {} Y: {}', 'gotoSpriteOrMouse:': 'Go to {}', 'glideSecs:toX:y:elapsed:from:': 'Glide {} secs to X: {} Y: {}', 'changeXposBy:': 'Change X by {}', 'xpos:': 'Set X to {}', 'changeYposBy:': 'Change Y by {}', 'ypos:': 'Set Y to {}', 'bounceOffEdge': 'If on edge, bounce', 'setRotationStyle': 'Set rotation style {}', 'xpos': 'X position', 'ypos': 'Y position', 'heading': 'Direction', 'say:duration:elapsed:from:': 'Say {} for {} secs', 'say:': 'Say {}', 'think:duration:elapsed:from:': 'Think {} for {} secs', 'think:': 'Think {}', 'show': 'Show', 'hide': 'Hide', 'lookLike:': 'Switch costume to {}', 'nextCostume': 'Next Costume', 'startScene': 'Switch backdrop to {}', 'changeGraphicEffect:by:': 'Change {} effect by {}', 'setGraphicEffect:to:': 'Set {} effect to {}', 'filterReset': 'Clear Graphic Effects', 'changeSizeBy:': 'Change Size by {}%', 'setSizeTo:': 'Set size to {}%', 'comeToFront': 'Go to front', 'goBackByLayers:': 'Go back {} layers', 'costumeIndex': 'Costume #', 'sceneName': 'Backdrop name', 'scale': 'Size', 'playSound:': 'Play sound {}', 'doPlaySoundAndWait': 'Play sound {} and wait', 'stopAllSounds': 'Stop all sounds', 'playDrum': 'Play drum {} for {} beats', 'rest:elapsed:from:': 'Rest for {} beats', 'noteOn:duration:elapsed:from:': 'Play note {} for {} beats', 'instrument:': 'Set Instrument to {}', 'changeVolumeBy:': 'Change Volume by {}', 'setVolumeTo:': 'Set Volume To {}', 'volume': 'Volume', 'changeTempoBy:': 'Change tempo by {}', 'setTempoTo:': 'Set tempo to {}', 'tempo': 'Tempo', 'stampCostume': 'Stamp', 'putPenDown': 'Pen Down', 'clearPenTrails': 'Clear', 'putPenUp': 'Pen Up', 'penColor:': 'Set pen colour (number) to {}', 'changePenHueBy:': 'Change pen colour by {}', 'setPenHueTo:': 'Set pen colour to {}', 'changePenShadeBy:': 'Change pen shade by {}', 'setPenShadeTo:': 'Set pen shade to {}', 'changePenSizeBy:': 'Change pen size by {}', 'penSize:': 'Set pen size to {}', 'readVariable': 'Variable: {}', 'setVar:to:': 'Set {} to {}', 'changeVar:by:': 'Change {} by {}', 'showVariable:': 'Show Variable {}', 'hideVariable:': 'Hide Variable {}', 'contentsOfList:': 'List: {}', 'append:toList:': 'Add {} to {}', 'deleteLine:ofList:': 'Delete {} of {}', 'insert:at:ofList:': 'Insert {} at {} of {}', 'setLine:ofList:to:': 'Replace Item {} of {} with {}', 'getLine:ofList:': 'Item {} of list {}', 'lineCountOfList:': 'Length of list: {}', 'list:contains:': 'List {} Contains {}', 'showList:': 'Show List {}', 'hideList:': 'Hide List {}', 'getParam': 'Argument: {}'}
+old_block_translations = {'procDef': 'Custom Block: {}',
+                          'whenGreenFlag': 'When Green Flag Clicked',
+                          'whenIReceive': 'When I Receive: {}',
+                          'doBroadcastAndWait': 'Broadcast {} and wait',
+                          'broadcast:': 'Broadcast {}',
+                          'whenSensorGreaterThan': 'When {} greater than {}',
+                          'whenKeyPressed': 'When {} key pressed', 'whenClicked': 'When this sprite clicked', 'whenCloned': 'When I start as a clone', 'wait:elapsed:from:': 'Wait {} secs', 'doRepeat': 'Repeat {} Times >', 'doForever': 'Repeat Forever >', 'doIf': 'If {} >', 'doIfElse': 'If {} Else >', 'doWaitUntil': 'Wait Until {}', 'doUntil': 'Repeat Until {}>', 'stopScripts': 'Stop {}', 'createCloneOf': 'Create clone of {}', 'deleteClone': 'Delete this clone', 'touching:': 'Touching {}', 'touchingColor:': 'Touching color (int) {}', 'distanceTo:': 'Distance to {}', 'color:sees:': 'Colorid {} is touching colorid {}', 'doAsk': 'Ask {}', 'answer': 'Answer', 'keyPressed:': 'Key {} pressed?', 'mousePressed': 'Mouse Down?', 'mouseX': 'Mouse X', 'mouseY': 'Mouse Y', 'soundLevel': 'Loudness', 'senseVideoMotion': 'Video {} on {}', 'setVideoState': 'Turn video [{}]', 'setVideoTransparency': 'Set Video Transparency To {}%', 'timer': 'Timer', 'timerReset': 'Reset Timer', 'getAttribute:of:': '{} of {}', 'timeAndDate': 'Current {}', 'timestamp': 'Days since 2000', 'getUserName': 'Username', '+': '{} + {}', '-': '{} - {}', '*': '{} * {}', '/': '{} / {}', 'randomFrom:to:': 'Pick random from {} to {}', '>': '{} > {}', '<': '{} < {}', '=': '{} = {}', '&': '{} and {}', '|': '{} or {}', 'not': 'Not {}', 'concatenate:with:': 'Join {} {}', 'letter:of:': 'Letter {} of {}', 'stringLength:': 'Length of {}', '%': '{} mod {}', 'rounded': 'Round {}', 'computeFunction:of:': '{} of {}', 'call': '{}', 'forward:': 'Move {} steps', 'turnRight:': 'Rotate {} degrees clockwise', 'turnLeft:': 'Rotate {} degrees counterclockwise', 'heading:': 'Point in direction {}', 'pointTowards:': 'Point Towards {}', 'gotoX:y:': 'Goto X: {} Y: {}', 'gotoSpriteOrMouse:': 'Go to {}', 'glideSecs:toX:y:elapsed:from:': 'Glide {} secs to X: {} Y: {}', 'changeXposBy:': 'Change X by {}', 'xpos:': 'Set X to {}', 'changeYposBy:': 'Change Y by {}', 'ypos:': 'Set Y to {}', 'bounceOffEdge': 'If on edge, bounce', 'setRotationStyle': 'Set rotation style {}', 'xpos': 'X position', 'ypos': 'Y position', 'heading': 'Direction', 'say:duration:elapsed:from:': 'Say {} for {} secs', 'say:': 'Say {}', 'think:duration:elapsed:from:': 'Think {} for {} secs', 'think:': 'Think {}', 'show': 'Show', 'hide': 'Hide', 'lookLike:': 'Switch costume to {}', 'nextCostume': 'Next Costume', 'startScene': 'Switch backdrop to {}', 'changeGraphicEffect:by:': 'Change {} effect by {}', 'setGraphicEffect:to:': 'Set {} effect to {}', 'filterReset': 'Clear Graphic Effects', 'changeSizeBy:': 'Change Size by {}%', 'setSizeTo:': 'Set size to {}%', 'comeToFront': 'Go to front', 'goBackByLayers:': 'Go back {} layers', 'costumeIndex': 'Costume #', 'sceneName': 'Backdrop name', 'scale': 'Size', 'playSound:': 'Play sound {}', 'doPlaySoundAndWait': 'Play sound {} and wait', 'stopAllSounds': 'Stop all sounds', 'playDrum': 'Play drum {} for {} beats', 'rest:elapsed:from:': 'Rest for {} beats', 'noteOn:duration:elapsed:from:': 'Play note {} for {} beats', 'instrument:': 'Set Instrument to {}', 'changeVolumeBy:': 'Change Volume by {}', 'setVolumeTo:': 'Set Volume To {}', 'volume': 'Volume', 'changeTempoBy:': 'Change tempo by {}', 'setTempoTo:': 'Set tempo to {}', 'tempo': 'Tempo', 'stampCostume': 'Stamp', 'putPenDown': 'Pen Down', 'clearPenTrails': 'Clear', 'putPenUp': 'Pen Up', 'penColor:': 'Set pen colour (number) to {}', 'changePenHueBy:': 'Change pen colour by {}', 'setPenHueTo:': 'Set pen colour to {}', 'changePenShadeBy:': 'Change pen shade by {}', 'setPenShadeTo:': 'Set pen shade to {}', 'changePenSizeBy:': 'Change pen size by {}', 'penSize:': 'Set pen size to {}', 'readVariable': 'Variable: {}', 'setVar:to:': 'Set {} to {}', 'changeVar:by:': 'Change {} by {}', 'showVariable:': 'Show Variable {}', 'hideVariable:': 'Hide Variable {}', 'contentsOfList:': 'List: {}', 'append:toList:': 'Add {} to {}', 'deleteLine:ofList:': 'Delete {} of {}', 'insert:at:ofList:': 'Insert {} at {} of {}', 'setLine:ofList:to:': 'Replace Item {} of {} with {}', 'getLine:ofList:': 'Item {} of list {}', 'lineCountOfList:': 'Length of list: {}', 'list:contains:': 'List {} Contains {}', 'showList:': 'Show List {}', 'hideList:': 'Hide List {}', 'getParam': 'Argument: {}'}
+old_block_attr_translations = {'objName': 'Object Name', 'children': 'Sprites',
+                               'currentCostumeIndex': 'Costume #',
+                               'videoAlpha': 'Video Transparency',
+                               'tempoBPM': 'Tempo', 'info': 'Project Info',
+                               'rotationStyle': 'Rotation Style',
+                               'scratchX': 'X Position',
+                               'scratchY': 'Y Position',
+                               'spriteInfo': 'Sprite Info',
+                               'isDraggable': 'Is Draggable?', 'scale': 'Size',
+                               'penLayerMD5': 'Pen Layer',
+                               'indexInLibrary': 'Image ID',
+                               'penLayerID': 'Pen Layer ID'
+}
 old_ui_translations = {}
 
 import functools
 @functools.lru_cache(None)
 def SB_(s):
-    try:
-        return old_block_translations[s]
-    except KeyError:
-        pass
-    log.add("Failed to translate block {!r}".format(s))
+    for trans_map in (old_block_translations, old_block_attr_translations):
+        try:
+            return trans_map[s]
+        except KeyError:
+            continue
+    log.add("Failed to translate internal {!r}".format(s))
     return s
 @functools.lru_cache(None)
 def UI_(s):
@@ -487,36 +576,8 @@ def load():
                                         else:
                                             raise TypeError()
                                     except:
-                                        if str(x) == 'objName':
-                                            lb.insert(END, 'Object Name')
-                                        elif str(x) == 'children':
-                                            lb.insert(END, 'Sprites')
-                                        elif str(x) == 'currentCostumeIndex':
-                                            lb.insert(END, 'Costume #')
-                                        elif str(x) == 'videoAlpha':
-                                            lb.insert(END, 'Video Transparency')
-                                        elif str(x) == 'tempoBPM':
-                                            lb.insert(END, 'Tempo')
-                                        elif str(x) == 'info':
-                                            lb.insert(END, 'Project Info')
-                                        elif str(x) == 'rotationStyle':
-                                            lb.insert(END, 'Rotation Style')
-                                        elif str(x) == 'scratchX':
-                                            lb.insert(END, 'X Position')
-                                        elif str(x) == 'scratchY':
-                                            lb.insert(END, 'Y Position')
-                                        elif str(x) == 'spriteInfo':
-                                            lb.insert(END, 'Sprite Info')
-                                        elif str(x) == 'isDraggable':
-                                            lb.insert(END, 'Is Draggable?')
-                                        elif str(x) == 'scale':
-                                            lb.insert(END, 'Size')
-                                        elif str(x) == 'penLayerMD5':
-                                            lb.insert(END, 'Pen Layer Image')
-                                        elif str(x) == 'indexInLibrary':
-                                            lb.insert(END, 'Image ID')
-                                        elif str(x) == 'penLayerID':
-                                            lb.insert(END, 'Pen Layer ID')
+                                        if str(x) in sprite_attributes:
+                                            lb.insert(END, SB_(str(x)))
                                         elif str(x) in block_parameters:
                                             # TODO: Move into function
                                             param_count = len(block_parameters[x])
