@@ -110,7 +110,7 @@ if args.error is not None:
 #########
 
 def fatal_error(errors):
-    err_text = '\n'.join(errors) + '\n' + UI_("Press return to close")
+    err_text = '\n'.join(errors) + '\n' + _("Press return to close")
     subprocess.call([sys.executable.replace('pythonw', 'python'),
                      __file__, '--error', err_text])
     sys.exit()
@@ -132,7 +132,7 @@ def create_data_files(base_path = r'C:\ProgramData\ScratchEdit'):
     config_path = os.path.join(base_path, 'ScratchEdit.ini')
     if not os.path.isfile(config_path):
         with open(config_path, 'w') as fh:
-            fh.write('''# ''' + UI_("ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign." + '''
+            fh.write('''# ''' + _("ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign." + '''
 [Graphics]
 Show Script Formatting = True
 Text Size = 14
@@ -140,9 +140,9 @@ Font = Arial
 Text Colour = Black
 
 [System]
-# ''' + UI_("This won't slow down ScratchEdit. It may take a little while to check though.") + '''
+# ''' + _("This won't slow down ScratchEdit. It may take a little while to check though.") + '''
 Check For Update at Startup = True
-# ''' + UI_("You will have massive lag when viewing large Scratch Projects if this is set to true.") + '''
+# ''' + _("You will have massive lag when viewing large Scratch Projects if this is set to true.") + '''
 Update JSON Window Every Edit = False'''))
 
 def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
@@ -163,8 +163,8 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
         log.add('Update available. Prompting user.')
         t = Tk()
         t.withdraw()
-        if db.askyesno(UI_('ScratchEdit Update'),
-                       UI_('A Newer version of ScratchEdit is available: {}\n'
+        if db.askyesno(_('ScratchEdit Update'),
+                       _('A Newer version of ScratchEdit is available: {}\n'
                            'Do you want to install it?').format(r), master = t):
             f = urllib.request.urlopen('https://raw.githubusercontent.com/'
                                        'Dylan5797/ScratchEdit/master/'
@@ -282,25 +282,18 @@ old_block_attr_translations = {'objName': 'Object Name', 'children': 'Sprites',
                                'indexInLibrary': 'Image ID',
                                'penLayerID': 'Pen Layer ID'
 }
-old_ui_translations = {}
+old__translations = {}
 
 import functools
 @functools.lru_cache(None)
-def SB_(s):
-    for trans_map in (old_block_translations, old_block_attr_translations):
+def _(s):
+    for trans_map in (old_block_translations, old_block_attr_translations,
+                      old__translations):
         try:
             return trans_map[s]
         except KeyError:
             continue
-    log.add("Failed to translate internal {!r}".format(s))
-    return s
-@functools.lru_cache(None)
-def UI_(s):
-    try:
-        return old_ui_translations[s]
-    except KeyError:
-        pass
-    log.add("Failed to translate UI {!r}".format(s))
+    log.add("Failed to translate {!r}".format(s))
     return s
 
 def old_scratchBlocks(block_parameters):
@@ -320,7 +313,7 @@ def old_scratchBlocks(block_parameters):
 
         def __getitem__(self, key):
             return {
-                't': "LEGACY: " + SB_(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
+                't': "LEGACY: " + _(key).format(*"§1 §2 §3 §4 §5 §6 §7 §8".split()),
                 's': list(range(1, len(self.params[key]) + 1))
             }
 
@@ -340,14 +333,14 @@ scratchBlocks = old_scratchBlocks(block_parameters)
 
 errors = []
 if not int(platform.python_branch().replace('.','')[1:]) > 339:
-    errors.append(UI_('ScratchEdit is made for Python "v3.4.0" but your '
+    errors.append(_('ScratchEdit is made for Python "v3.4.0" but your '
                       'Python version is "{}"').format(
                           platform.python_branch()))
 
 try:
     import tkinter
 except ImportError:
-    errors.append(UI_("tkinter wasn't installed during Python installation!! "
+    errors.append(_("tkinter wasn't installed during Python installation!! "
                       "ScratchEdit cannot be used if Python has not been "
                       "installed with the official installer OR you have "
                       'unchecked "Tcl/IDLE" in the installer. '
@@ -356,7 +349,7 @@ else:
     del tkinter
 
 if not platform.uname().system == 'Windows':
-    errors.append(UI_('You have to be using Windows to run ScratchEdit!'))
+    errors.append(_('You have to be using Windows to run ScratchEdit!'))
 
 if errors:
     fatal_error(errors)
@@ -417,7 +410,7 @@ if sets["Check For Update at Startup"]:
     check_for_update()
 tk = Tk()
 tk.focus()
-tk.title(UI_('ScratchEdit'))
+tk.title(_('ScratchEdit'))
 log.add('Successfully imported all modules')
 def forcekill(e=None):
     log.add('Under forcekill() call. Destroying {"EditorWindow":"edw", "ValueEditor":"ky", "HelpScreen":"helps", "MainScratchEditWindow":"tk"}')
@@ -444,7 +437,7 @@ def load():
     FILE_LOADED = True
     global loadf
     loadf = tkinter.filedialog.askopenfilename(
-        filetypes = [(UI_('Scratch Projects'), 'sb2')])
+        filetypes = [(_('Scratch Projects'), 'sb2')])
     if os.path.isfile(loadf):
         log.add('Ready to read file at "' + loadf + '" ')
         global zipf
@@ -503,11 +496,11 @@ def load():
                                 quick_and_dirty = False
                                 if isinstance(x, dict):
                                     if settings["Graphics"].getboolean("Show Script Formatting"):
-                                        for _u, _t in ((UI_('Sprite: {}'), 'objName'),
-                                                       (UI_('List: {}'), 'listName'),
-                                                       (UI_('Variable: {}'), 'label'),
-                                                       (UI_('Sound: {}'), 'soundName'),
-                                                       (UI_('Costume: {}'), 'costumeName')):
+                                        for _u, _t in ((_('Sprite: {}'), 'objName'),
+                                                       (_('List: {}'), 'listName'),
+                                                       (_('Variable: {}'), 'label'),
+                                                       (_('Sound: {}'), 'soundName'),
+                                                       (_('Costume: {}'), 'costumeName')):
                                             if _t in x:
                                                 lb.insert(END, _u.format(x[_t]))
                                                 t = _t
@@ -577,11 +570,11 @@ def load():
                                             raise TypeError()
                                     except:
                                         if str(x) in sprite_attributes:
-                                            lb.insert(END, SB_(str(x)))
+                                            lb.insert(END, _(str(x)))
                                         elif str(x) in block_parameters:
                                             # TODO: Move into function
                                             param_count = len(block_parameters[x])
-                                            name = SB_(x).format(*(ls[m] for m in range(1, param_count + 1)))
+                                            name = _(x).format(*(ls[m] for m in range(1, param_count + 1)))
                                             lb.insert(END, name)
                                         else:
                                             try:
