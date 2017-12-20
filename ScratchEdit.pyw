@@ -208,7 +208,7 @@ def create_data_files(base_path = r'C:\ProgramData\ScratchEdit'):
     config_path = os.path.join(base_path, 'ScratchEdit.ini')
     if not os.path.isfile(config_path):
         with open(config_path, 'w') as fh:
-            fh.write('''# ''' + _("ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign." + '''
+            fh.write('''# ''' + _("ScratchEdit ini, set options here. Only change text on the righthand side of the equals sign.") + '''
 [Graphics]
 Show Script Formatting = True
 Text Size = 14
@@ -219,7 +219,7 @@ Text Colour = Black
 # ''' + _("This won't slow down ScratchEdit. It may take a little while to check though.") + '''
 Check For Update at Startup = True
 # ''' + _("You will have massive lag when viewing large Scratch Projects if this is set to true.") + '''
-Update JSON Window Every Edit = False'''))
+Update JSON Window Every Edit = False''')
 
 def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
                            'ScratchEdit/current-update/latestupdate.txt',
@@ -241,7 +241,7 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
         t.withdraw()
         if db.askyesno(_('ScratchEdit Update'),
                        _('A Newer version of ScratchEdit is available: {}\n'
-                           'Do you want to install it?').format(r), master = t):
+                         'Do you want to install it?').format(r), master = t):
             f = urllib.request.urlopen('https://raw.githubusercontent.com/'
                                        'Dylan5797/ScratchEdit/master/'
                                        'ScratchEdit.pyw').read()
@@ -435,6 +435,7 @@ old_UI_translations = {}
 import functools
 @functools.lru_cache(None)
 def _(s):
+    assert(isinstance(s, str))
     for trans_map in (old_block_translations, old_block_attr_translations,
                       old_UI_translations):
         try:
@@ -489,10 +490,10 @@ try:
     import tkinter
 except ImportError:
     errors.append(_("tkinter wasn't installed during Python installation!! "
-                      "ScratchEdit cannot be used if Python has not been "
-                      "installed with the official installer OR you have "
-                      'unchecked "Tcl/IDLE" in the installer. '
-                      "Please reinstall Python and do it right."))
+                    "ScratchEdit cannot be used if Python has not been "
+                    "installed with the official installer OR you have "
+                    'unchecked "Tcl/IDLE" in the installer. '
+                    "Please reinstall Python and do it right."))
 else:
     del tkinter
 
