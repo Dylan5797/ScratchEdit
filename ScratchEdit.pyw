@@ -18,6 +18,7 @@ import json
 import webbrowser
 import argparse
 import configparser
+import contextlib
 # Done imports (except for some later on)
 
 global version
@@ -293,6 +294,39 @@ class Log():
             return time.strftime('[%y-%m-%d %H.%M.%S]')
         else:
             return time.strftime('[%y/%m/%d %H:%M:%S]')
+
+    @contextlib.contextmanager
+    def process(self, name, header = 'INFO', begun = "started",
+                done = "completed", failed = "failed"):
+        """Logs a process, including any exceptions.
+
+        >>> log = Log()
+        >>> with log.process("Square the user's number"):
+        ...     print(int(input()) ** 2)
+        """
+        timestamp = self.timestamp(False)
+        with open(self.name, 'a') as f:
+            f.write("{timestamp} [{header}]: {name} {begun}\n"
+                    .format(**locals()))  # TODO: Use f"" in Python 3.6 (maybe)
+        try:
+            # Thanks to contextlib.contextmanager,
+            # yield yields to the code we want to log
+            # any failures of.
+            yield
+        except:
+            timestamp = self.timestamp(False)
+            error = traceback.format_exc()
+            with open(self.name, 'a') as f:
+                f.write("{timestamp} [{header}]: {name} {failed}: "
+                        "[\n{error}\n]\n"
+                        .format(**locals()))
+            raise
+        else:
+            timestamp = self.timestamp(False)
+            with open(self.name, 'a') as f:
+                f.write("{timestamp} [{header}]: {name} {done}\n"
+                        .format(**locals()))
+        
 
 global log
 log = Log()
