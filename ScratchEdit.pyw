@@ -18,7 +18,7 @@ import json
 import webbrowser
 import argparse
 import configparser
-import contextlib
+import functools
 # Done imports (except for some later on)
 
 global version
@@ -254,6 +254,21 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
     threading.Thread(target=run_in_thread,
                      args=(url, version)).start()
 
+def _self_self_decorator(cls):
+    """Adds self.self to each instance of a class within a class.
+    
+    This can only be done by replacing the class with a method,
+    since only methods receive the self parameter,
+    since only methods can be bound methods.
+    There's no such thing as a bound class!
+    """
+    @functools.wraps(cls)
+    def wrapper(self, *args, **kwargs):
+        instance = cls(*args, **kwargs)
+        instance.self = self
+        return instance
+    return wrapper
+
 class Log():
     def __init__(self, text = 'ScratchEdit {}'.format(version),
                  base_path = r'C:\ProgramData\ScratchEdit'):
@@ -295,37 +310,50 @@ class Log():
         else:
             return time.strftime('[%y/%m/%d %H:%M:%S]')
 
-    @contextlib.contextmanager
-    def process(self, name, header = 'INFO', begun = "started",
-                done = "completed", failed = "failed"):
+    @_self_self_decorator
+    class process:
         """Logs a process, including any exceptions.
 
         >>> log = Log()
         >>> with log.process("Square the user's number"):
         ...     print(int(input()) ** 2)
         """
-        timestamp = self.timestamp(False)
-        with open(self.name, 'a') as f:
-            f.write("{timestamp} [{header}]: {name} {begun}\n"
-                    .format(**locals()))  # TODO: Use f"" in Python 3.6 (maybe)
-        try:
-            # Thanks to contextlib.contextmanager,
-            # yield yields to the code we want to log
-            # any failures of.
-            yield
-        except:
-            timestamp = self.timestamp(False)
-            error = traceback.format_exc()
-            with open(self.name, 'a') as f:
-                f.write("{timestamp} [{header}]: {name} {failed}: "
-                        "[\n{error}\n]\n"
+        
+        def __init__(self, name, header = 'INFO', begun = "started",
+                     done = "completed", failed = "failed"):
+            self.name = name
+            self.header = header
+            self.begun = begun
+            self.done = done
+            self.failed = failed
+        
+        def __enter__(self):
+            header = self.header
+            name = self.name
+            begun = self.begun
+            timestamp = self.self.timestamp(False)
+            with open(self.self.name, 'a') as f:
+                # TODO: Use f"" in Python 3.6 (maybe)
+                f.write("{timestamp} [{header}]: {name} {begun}\n"
                         .format(**locals()))
-            raise
-        else:
-            timestamp = self.timestamp(False)
-            with open(self.name, 'a') as f:
-                f.write("{timestamp} [{header}]: {name} {done}\n"
-                        .format(**locals()))
+
+        def __exit__(self, *exc_info):
+            header = self.header
+            name = self.name
+            timestamp = self.self.timestamp(False)
+            if exc_info[0] is None:
+                done = self.done
+                with open(self.self.name, 'a') as f:
+                    f.write("{timestamp} [{header}]: {name} {done}\n"
+                            .format(**locals()))
+            else:
+                failed = self.failed
+                error = "".join(traceback.format_exception(*exc_info))
+                with open(self.self.name, 'a') as f:
+                    f.write("{timestamp} [{header}]: {name} {failed}: "
+                            "[\n{error}\n]\n"
+                            .format(**locals()))
+                raise
         
 
 global log
@@ -466,7 +494,6 @@ old_block_attr_translations = {
 }
 old_UI_translations = {}
 
-import functools
 @functools.lru_cache(None)
 def _(s):
     assert(isinstance(s, str))
