@@ -542,10 +542,9 @@ scratchBlocks = old_scratchBlocks(block_details)
 #####################
 
 errors = []
-if not int(platform.python_branch().replace('.','')[1:]) > 339:
+if tuple(int(x) for x in platform.python_branch()[1:].split('.')) < (3, 4, 0):
     errors.append(_('ScratchEdit is made for Python "v3.4.0" but your '
-                      'Python version is "{}"').format(
-                          platform.python_branch()))
+                    'Python version is "{}"').format(platform.python_branch()))
 
 try:
     import tkinter
