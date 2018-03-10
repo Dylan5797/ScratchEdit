@@ -22,9 +22,13 @@ import functools
 # Done imports (except for some later on)
 
 global version
+global program_dir
 global block_details
 global sprite_attributes
 version = '4.0.0-beta'
+# TODO: Replace with something saner.
+# PORT: Replace with OS check?
+program_dir = os.path.dirname(os.path.realpath(__file__))
 
 Block = collections.namedtuple("Block", "type parameters")
 # Extensions to the official Scratch format:
@@ -199,7 +203,8 @@ def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
     if sysexit:
         os._exit(1)
 
-def create_data_files(base_path = r'C:\ProgramData\ScratchEdit'):
+def create_data_files(base_path = program_dir):
+    # TODO: Don't recalculate path
     # TODO: Don't hardcode base_path's default value - use `is None` idiom.
     # PORT: base_path should autodetect based on OS.
     for subdir in ('.logging',):  # Must contain at least one directory!
@@ -271,9 +276,11 @@ def _self_self_decorator(cls):
 
 class Log():
     def __init__(self, text = 'ScratchEdit {}'.format(version),
-                 base_path = r'C:\ProgramData\ScratchEdit'):
+                 # base_path is ScratchEdit directory/.logging
+                 # TODO: Don't recalculate path
+                 base_path = os.path.join(program_dir, '.logging')):
         self.time = self.timestamp()
-        self.name = os.path.join(base_path, '.logging', self.time + '.txt')
+        self.name = os.path.join(base_path, self.time + '.txt')
         with open(self.name, 'w') as a:
             a.write(text + ' --' + self.timestamp(False) + '\n')
     
@@ -364,7 +371,7 @@ log = Log()
 #########
 
 settings = configparser.ConfigParser()
-settings.read(r"C:\ProgramData\ScratchEdit\ScratchEdit.ini")
+settings.read(os.path.join(program_dir, "ScratchEdit.ini"))
 
 ########## These exist solely to cushion the blow
 # Legacy # of having a full refactor all at once.
@@ -542,9 +549,20 @@ scratchBlocks = old_scratchBlocks(block_details)
 #####################
 
 errors = []
-if tuple(int(x) for x in platform.python_branch()[1:].split('.')) < (3, 4, 0):
+
+try:
+    supported_version = (  tuple(map(int, platform.python_version_tuple()))
+                         > (3, 4, 0))
+except ValueError:
+    log.add("Could not parse version number. "
+            "Assuming you know what you're doing.")
+    supported_version = True
+
+if not supported_version:
     errors.append(_('ScratchEdit is made for Python "v3.4.0" but your '
                     'Python version is "{}"').format(platform.python_branch()))
+
+del supported_version
 
 try:
     import tkinter
@@ -556,9 +574,6 @@ except ImportError:
                     "Please reinstall Python and do it right."))
 else:
     del tkinter
-
-if not platform.uname().system == 'Windows':
-    errors.append(_('You have to be using Windows to run ScratchEdit!'))
 
 if errors:
     fatal_error(errors)
@@ -1080,7 +1095,7 @@ def save(e=None):
             zout.close()
             zin.close()
         except:
-            rec = 'C:\\ProgramData\\ScratchEdit\\recoveredJSON-' + str(random.randint(100000000, 999999999)) + '.json'
+            rec = os.path.join(program_dir, 'recoveredJSON-' + str(random.randint(100000000, 999999999)) + '.json')
             x = open(rec, 'w')
             x.write(str(dat))
             x.close()
@@ -1160,7 +1175,7 @@ def sedini():
     else:
         a = True
     if a:
-        subprocess.call(['notepad','C:\ProgramData\ScratchEdit\ScratchEdit.ini'])
+        subprocess.call(['notepad',os.path.join(program_dir,'ScratchEdit.ini')])
         os.startfile(__file__)
 def generatewidgets():
     log.add('Attempting to make widgets')
