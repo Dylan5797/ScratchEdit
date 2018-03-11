@@ -581,10 +581,13 @@ if errors:
 del errors
 
 def wait_cursor(obj):
-    try:
-        tk.config(cursor='wait')
-    except tkinter.TclError as e:
-        log.add("Failed to set cursor 'wait'.")
+    for cursor in ('wait', 'clock'):
+        try:
+            tk.config(cursor=cursor)
+        except tkinter.TclError as e:
+            log.add("Failed to set cursor '{}'.".format(cursor))
+        else:
+            return
 
 global pp
 pp = pprint.PrettyPrinter(indent=4, compact=True)
