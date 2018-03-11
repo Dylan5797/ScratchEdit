@@ -256,8 +256,9 @@ def check_for_update(url = 'https://raw.githubusercontent.com/Dylan5797/'
             
             os.startfile(__file__)
             os._exit()
+        t.destroy()
     threading.Thread(target=run_in_thread,
-                     args=(url, version)).start()
+                     args=(url, current_version)).start()
 
 def _self_self_decorator(cls):
     """Adds self.self to each instance of a class within a class.
