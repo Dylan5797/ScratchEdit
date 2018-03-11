@@ -192,8 +192,44 @@ if args.error is not None:
 
 def fatal_error(errors):
     err_text = '\n'.join(errors) + '\n' + _("Press return to close")
-    subprocess.call([sys.executable.replace('pythonw', 'python'),
-                     __file__, '--error', err_text])
+
+    default_shells = {
+        "nt": ("cmd.exe", "command.com"),
+        "os2": ("command.com",),
+        "ce": ("cmd.exe",),  # This one is a lost cause.
+        "posix": ("x-terminal-emulator", "xterm")
+    }
+
+    # Cross-platform inspired by https://stackoverflow.com/a/11724655/5223757
+    ttys = []
+    if os.name in ("nt", "os2", "ce"):
+        try:
+            ttys.append([os.environ["COMSPEC"], "/c", "start"])
+        except KeyError:
+            pass
+        
+        for shell in default_shells[os.name]:
+            ttys.append([shell, "/c", "start"])
+    elif os.name == "posix":
+        for shell in default_shells["posix"]:
+            ttys.append([shell, "-e"])
+    for tty in ttys:
+        try:
+            subprocess.call(tty + [
+                sys.executable.replace('pythonw', 'python'),
+                __file__, '--error', err_text
+            ])
+            break
+        except FileNotFoundError:
+            pass
+    else:
+        # Now, here's a problem.
+        # There's precisely NO way to do anything here.
+        # Absolutely none.
+        # We failed to inform the user why it didn't work.
+        # On the plus side, if their system is this alien
+        # the user probably couldn't fix it anyway.
+        pass
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
