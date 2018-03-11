@@ -580,6 +580,12 @@ if errors:
 
 del errors
 
+def wait_cursor(obj):
+    try:
+        tk.config(cursor='wait')
+    except tkinter.TclError as e:
+        log.add("Failed to set cursor 'wait'.")
+
 global pp
 pp = pprint.PrettyPrinter(indent=4, compact=True)
 from tkinter import *
@@ -862,7 +868,7 @@ def load():
                 else:
                     back.config(state=DISABLED)
                 if sets['Update JSON Window Every Edit'.upper()]:
-                    tk.config(cursor='wait')
+                    wait_cursor(tk)
                     txt.settext('Loading...')
                     txt.update()
                     txt.settext(pp.pformat(dat))
@@ -930,7 +936,7 @@ def load():
             bt1.config(state=DISABLED)
             bt1.pack(side=LEFT)
             regenerate_lb()
-            tk.config(cursor='wait')
+            wait_cursor(tk)
             txt.settext(pp.pformat(dat))
             txt.update()
             tk.config(cursor='')
