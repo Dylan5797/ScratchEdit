@@ -209,7 +209,7 @@ def fatal_error(errors):
             pass
         
         for shell in default_shells[os.name]:
-            ttys.append([shell, "/c", "start"])
+            ttys.append([shell, "/c", "start", ""])
     elif os.name == "posix":
         for shell in default_shells["posix"]:
             ttys.append([shell, "-e"])
