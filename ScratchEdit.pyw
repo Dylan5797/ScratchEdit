@@ -210,6 +210,13 @@ def fatal_error(errors):
         
         for shell in default_shells[os.name]:
             ttys.append([shell, "/c", "start", ""])
+    elif sys.platform == "darwin":
+        # Loosely based on https://superuser.com/a/491729/541767
+        try:
+            subprocess.call("osascript -e 'tell app \"System Events\" to "
+                            "display dialog \"" + repr(err_text)[1:-1] + "\"'")
+        except FileNotFoundError:
+            pass
     elif os.name == "posix":
         for shell in default_shells["posix"]:
             ttys.append([shell, "-e"])
