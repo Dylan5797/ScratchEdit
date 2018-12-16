@@ -1,4 +1,4 @@
-#!python3.4
+#!python3
 #ScratchEdit editor by Dylan Beswick
 global scratchBlocks
 global version
