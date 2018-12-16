@@ -230,13 +230,11 @@ def fatal_error(errors):
         except FileNotFoundError:
             pass
     else:
-        # Now, here's a problem.
-        # There's precisely NO way to do anything here.
-        # Absolutely none.
         # We failed to inform the user why it didn't work.
         # On the plus side, if their system is this alien
         # the user probably couldn't fix it anyway.
-        pass
+        # Last-ditch attempt to show the error.
+        print(err_text, file=sys.stderr)
     sys.exit()
 
 def crash(error,header='ERROR',raw=False,c=True,sysexit=True,openlogfile=True):
