@@ -1,4 +1,4 @@
-#!python3.4
+#!python3
 """ScratchEdit editor by Dylan Beswick and wizzwizz4"""
 
 import sys
